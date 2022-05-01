@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_item_sorting"
+        android:title="@string/menu_sorting"/>
+    <item
+        android:id="@+id/menu_item_increase_columns"
+        android:title="@string/menu_increase_columns" />
+    <item
+        android:id="@+id/menu_item_decrease_columns"
+        android:title="@string/menu_decrease_columns" />
+    <item
+        android:id="@+id/menu_item_root_folders"
+        android:title="@string/menu_root_folders" />
+</menu>
+

@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">H-Gal</string>
+    <string name="menu_sorting">Sorting</string>
+    <string name="menu_increase_columns">Increase columns by one</string>
+    <string name="menu_decrease_columns">Decrease columns by one</string>
+    <string name="menu_root_folders">Root folders</string>
+
+    <string name="gallery_title">Happy Gallery</string>
+    <string name="gallery_folder_child_info">folders: %1$d \tfiles: %2$d</string>
+
+    <string name="settings_sorting_title">Sorting settings</string>
+    <string name="settings_sorting_by_name_ascending">by name (ascending)</string>
+    <string name="settings_sorting_by_name_descending">by name (descending)</string>
+    <string name="settings_sorting_by_size_ascending">by size (ascending)</string>
+    <string name="settings_sorting_by_size_descending">by size (descending)</string>
+    <string name="settings_sorting_by_modified_date_ascending">by last modified date (ascending)</string>
+    <string name="settings_sorting_by_modified_date_descending">by last modified date (descending)</string>
+
+    <string name="settings_root_folder_title">Gallery root folder settings</string>
+    <string name="settings_root_folder_add_button">Add folder</string>
+    <string name="settings_root_folder_delete_button">Remove</string>
+</resources>

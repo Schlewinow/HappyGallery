@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/content_background"
+    android:theme="@style/ImageViewerActionBar"
+    tools:context=".views.VideoViewerActivity">
+
+    <SurfaceView
+        android:id="@+id/videoViewerSurface"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/videoViewerTopFade"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:rotation="180"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/videoViewerToolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/full_fade" />
+
+    <ImageView
+        android:id="@+id/videoViewerBottomFade2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/videoViewerControlsLayout"
+        app:srcCompat="@drawable/full_fade" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/videoViewerToolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ImageViewerActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/videoViewerTopGuideline" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/videoViewerTopGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="48dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/videoViewerBottomGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="48dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/videoViewerControlsLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@+id/videoViewerBottomGuideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/videoViewerPlayButton"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginBottom="16dp"
+            android:adjustViewBounds="true"
+            android:alpha="0.5"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/videoViewerProgressBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_player_play" />
+
+        <ImageButton
+            android:id="@+id/videoViewerPauseButton"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginBottom="16dp"
+            android:adjustViewBounds="true"
+            android:alpha="0.5"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toTopOf="@+id/videoViewerProgressBar"
+            app:layout_constraintEnd_toEndOf="@+id/videoViewerPlayButton"
+            app:layout_constraintStart_toStartOf="@+id/videoViewerPlayButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_player_pause" />
+
+        <ImageButton
+            android:id="@+id/videoViewerRewindSingleButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
+            android:alpha="0.5"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_player_rewind_single" />
+
+        <ImageButton
+            android:id="@+id/videoViewerRewindButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
+            android:alpha="0.5"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            app:layout_constraintStart_toEndOf="@+id/videoViewerRewindSingleButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_player_rewind" />
+
+        <ImageButton
+            android:id="@+id/videoViewerForwardSingleButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:adjustViewBounds="true"
+            android:alpha="0.5"
+            android:background="@null"
+            android:rotation="180"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_player_rewind_single" />
+
+        <ImageButton
+            android:id="@+id/videoViewerForwardButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:adjustViewBounds="true"
+            android:alpha="0.5"
+            android:background="@null"
+            android:rotation="180"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toStartOf="@+id/videoViewerForwardSingleButton"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_player_rewind" />
+
+        <SeekBar
+            android:id="@+id/videoViewerProgressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:theme="@style/VideoViewerSeekBar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/videoViewerCurrentTimeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/videoViewerProgressBar"
+            tools:text="00:00:00" />
+
+        <TextView
+            android:id="@+id/videoViewerTotalTimeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/videoViewerProgressBar"
+            tools:text="00:00:00" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

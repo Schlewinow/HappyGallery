@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+
+    <color name="theme_primary_bright">#4acea2</color>
+    <color name="theme_primary_mid">#309171</color>
+    <color name="theme_primary_dark">#1e624c</color>
+    <color name="theme_primary_content">#FFFFFF</color>
+    <color name="theme_primary_content_dark">#000000</color>
+
+    <color name="content_background">#CCCCCC</color>
+    <color name="gallery_element_text">#FFFFFF</color>
+</resources>

@@ -39,37 +39,43 @@
                 android:id="@+id/settingsSortingNameAscendingRadioButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/settings_sorting_by_name_ascending" />
+                android:text="@string/settings_sorting_by_name_ascending"
+                android:textColor="@color/settings_text" />
 
             <RadioButton
                 android:id="@+id/settingsSortingNameDescendingRadioButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/settings_sorting_by_name_descending" />
+                android:text="@string/settings_sorting_by_name_descending"
+                android:textColor="@color/settings_text" />
 
             <RadioButton
                 android:id="@+id/settingsSortingSizeAscendingRadioButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/settings_sorting_by_size_ascending" />
+                android:text="@string/settings_sorting_by_size_ascending"
+                android:textColor="@color/settings_text" />
 
             <RadioButton
                 android:id="@+id/settingsSortingSizeDescendingRadioButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/settings_sorting_by_size_descending" />
+                android:text="@string/settings_sorting_by_size_descending"
+                android:textColor="@color/settings_text" />
 
             <RadioButton
                 android:id="@+id/settingsSortingLastModifiedAscendingRadioButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/settings_sorting_by_modified_date_ascending" />
+                android:text="@string/settings_sorting_by_modified_date_ascending"
+                android:textColor="@color/settings_text" />
 
             <RadioButton
                 android:id="@+id/settingsSortingLastModifiedDescendingRadioButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/settings_sorting_by_modified_date_descending" />
+                android:text="@string/settings_sorting_by_modified_date_descending"
+                android:textColor="@color/settings_text" />
         </RadioGroup>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

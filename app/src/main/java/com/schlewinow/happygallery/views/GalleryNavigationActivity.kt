@@ -31,19 +31,6 @@ class GalleryNavigationActivity : AppCompatActivity() {
 
         fileRecycler = findViewById(R.id.navigationFileRecycler)
         isPortraitOrientation = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
-
-        val rootLayout: View = findViewById(R.id.navigationRootLayout)
-        rootLayout.rootView.setOnApplyWindowInsetsListener { view, windowInsets ->
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                GalleryNavigationData.statusBarHeight = windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.systemBars()).top
-                GalleryNavigationData.navigationBarHeight = windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.systemBars()).bottom
-            }
-            else {
-                GalleryNavigationData.statusBarHeight = windowInsets.systemWindowInsetTop
-                GalleryNavigationData.navigationBarHeight = windowInsets.systemWindowInsetBottom
-            }
-            windowInsets
-        }
     }
 
     override fun onResume() {

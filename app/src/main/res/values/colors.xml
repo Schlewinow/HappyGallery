@@ -3,12 +3,13 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
 
-    <color name="theme_primary_bright">#4acea2</color>
-    <color name="theme_primary_mid">#309171</color>
-    <color name="theme_primary_dark">#1e624c</color>
+    <color name="theme_primary_bright">#00d2bb</color>
+    <color name="theme_primary_mid">#00aa98</color>
+    <color name="theme_primary_dark">#008e81</color>
     <color name="theme_primary_content">#FFFFFF</color>
     <color name="theme_primary_content_dark">#000000</color>
 
-    <color name="content_background">#CCCCCC</color>
+    <color name="content_background">#444444</color>
     <color name="gallery_element_text">#FFFFFF</color>
+    <color name="settings_text">#FFFFFF</color>
 </resources>

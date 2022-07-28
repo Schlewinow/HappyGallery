@@ -23,7 +23,7 @@ import com.schlewinow.happygallery.model.VideoData
 import com.schlewinow.happygallery.tools.folders.VideoFileTools
 import java.lang.Thread.sleep
 
-class VideoViewerActivity : AppCompatActivity() {
+class VideoViewerExoActivity : AppCompatActivity() {
     private var videoPlayer: ExoPlayer? = null
     private var videoProgressBar: SeekBar? = null
     private var videoProgressTimeText: TextView? = null
@@ -36,7 +36,7 @@ class VideoViewerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_video_viewer)
+        setContentView(R.layout.activity_video_viewer_exo)
         setSupportActionBar(findViewById(R.id.videoViewerToolbar))
 
         mainHandler = Handler(mainLooper)
@@ -66,7 +66,7 @@ class VideoViewerActivity : AppCompatActivity() {
 
         // Restore UI.
         resetVideoUI()
-        val progressToRestore = VideoData.currentVideoProgress
+        val progressToRestore = VideoData.currentVideoMillis
         val restoreProgressHandler = Handler(mainLooper)
         restoreProgressHandler.postDelayed( {
             videoPlayer?.seekTo(progressToRestore)
@@ -83,7 +83,7 @@ class VideoViewerActivity : AppCompatActivity() {
                 mainHandler?.post {
                     videoProgressBar?.progress = videoPlayer?.currentPosition?.toInt() ?: 0
                     videoProgressTimeText?.text = makeTimeString(videoPlayer?.currentPosition ?: 0)
-                    VideoData.currentVideoProgress = videoPlayer?.currentPosition ?: 0
+                    VideoData.currentVideoMillis = videoPlayer?.currentPosition ?: 0
                 }
                 sleep(100)
             }
@@ -174,7 +174,7 @@ class VideoViewerActivity : AppCompatActivity() {
 
         videoView.holder.addCallback(object : SurfaceHolder.Callback {
             override fun surfaceCreated(surfaceHolder: SurfaceHolder) {
-                videoPlayer = ExoPlayer.Builder(this@VideoViewerActivity).build()
+                videoPlayer = ExoPlayer.Builder(this@VideoViewerExoActivity).build()
                 videoPlayer?.setMediaItem(MediaItem.fromUri(videoUri))
                 videoPlayer?.prepare()
                 videoPlayer?.setVideoSurfaceHolder(surfaceHolder)
@@ -243,7 +243,7 @@ class VideoViewerActivity : AppCompatActivity() {
 
     private fun forwardVideo(milliseconds: Long) {
         val currentPosition = videoPlayer?.currentPosition?: 0
-        val duration = videoPlayer?.duration ?: milliseconds - 0
+        val duration = videoPlayer?.duration ?: milliseconds
         val targetPosition: Long
 
         if(currentPosition < duration - milliseconds) {
@@ -284,7 +284,7 @@ class VideoViewerActivity : AppCompatActivity() {
         val screenWidth = resources.displayMetrics.widthPixels
         val screenHeight = resources.displayMetrics.heightPixels
         val screenProportion = screenWidth.toFloat() / screenHeight.toFloat()
-        val layoutParams: ViewGroup.LayoutParams = surfaceView.getLayoutParams()
+        val layoutParams: ViewGroup.LayoutParams = surfaceView.layoutParams
 
         if (videoProportion > screenProportion) {
             layoutParams.width = screenWidth
@@ -294,8 +294,8 @@ class VideoViewerActivity : AppCompatActivity() {
             layoutParams.height = screenHeight
         }
 
-        surfaceView.setLayoutParams(layoutParams)
-        surfaceView.setClickable(true)
+        surfaceView.layoutParams = layoutParams
+        surfaceView.isClickable = true
     }
 
     private fun makeTimeString(milliseconds: Long): String {
@@ -331,7 +331,7 @@ class VideoViewerActivity : AppCompatActivity() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 rotation = display?.rotation ?: Surface.ROTATION_90
             } else {
-                rotation = getWindowManager().getDefaultDisplay().getRotation()
+                rotation = windowManager.getDefaultDisplay().getRotation()
             }
 
             if (rotation == Surface.ROTATION_90) {

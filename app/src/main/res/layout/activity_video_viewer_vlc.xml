@@ -6,12 +6,13 @@
     android:layout_height="match_parent"
     android:background="@color/content_background"
     android:theme="@style/ImageViewerActionBar"
-    tools:context=".views.VideoViewerActivity">
+    tools:context=".views.VideoViewerVlcActivity">
 
-    <SurfaceView
-        android:id="@+id/videoViewerSurface"
+    <org.videolan.libvlc.util.VLCVideoLayout
+        android:id="@+id/videoViewerVlcLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:fitsSystemWindows="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +32,7 @@
         app:srcCompat="@drawable/full_fade" />
 
     <ImageView
-        android:id="@+id/videoViewerBottomFade"
+        android:id="@+id/videoViewerBottomFade2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:adjustViewBounds="true"
@@ -39,6 +40,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/videoViewerControlsLayout"
         app:srcCompat="@drawable/full_fade" />
 
     <androidx.appcompat.widget.Toolbar
@@ -47,8 +49,8 @@
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ImageViewerActionBar"
-        app:layout_constraintEnd_toStartOf="@+id/videoViewerRightGuideline"
-        app:layout_constraintStart_toStartOf="@+id/videoViewerLeftGuideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/videoViewerTopGuideline" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -59,17 +61,10 @@
         app:layout_constraintGuide_begin="48dp" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/videoViewerLeftGuideline"
+        android:id="@+id/videoViewerBottomGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="48dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/videoViewerRightGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         app:layout_constraintGuide_end="48dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -77,10 +72,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="@+id/videoViewerSurface"
-        app:layout_constraintEnd_toStartOf="@+id/videoViewerRightGuideline"
+        app:layout_constraintBottom_toTopOf="@+id/videoViewerBottomGuideline"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/videoViewerLeftGuideline">
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageButton
             android:id="@+id/videoViewerPlayButton"

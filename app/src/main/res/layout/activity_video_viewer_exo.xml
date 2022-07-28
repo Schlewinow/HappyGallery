@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/content_background"
     android:theme="@style/ImageViewerActionBar"
-    tools:context=".views.VideoViewerActivity">
+    tools:context=".views.VideoViewerExoActivity">
 
     <SurfaceView
         android:id="@+id/videoViewerSurface"

@@ -17,7 +17,7 @@
             android:name=".views.SettingsSortingActivity"
             android:exported="false" />
         <activity
-            android:name=".views.VideoViewerActivity"
+            android:name=".views.VideoViewerVlcActivity"
             android:exported="false" />
         <activity
             android:name=".views.ImageViewerActivity"

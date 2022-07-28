@@ -19,7 +19,8 @@ object VideoFileTools {
      */
     fun checkIfVideo(galleryFile: GalleryFileContainer): Boolean {
         val stringFileType = galleryFile.type
-        if (stringFileType == "mp4") {
+        if (stringFileType == "mp4"
+            || stringFileType == "wmv") {
             return true
         }
         return false

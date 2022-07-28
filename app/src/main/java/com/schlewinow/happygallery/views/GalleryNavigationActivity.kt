@@ -221,8 +221,8 @@ class GalleryNavigationActivity : AppCompatActivity() {
             } else if(galleryFile.isVideo) {
                 VideoFileTools.loadThumbnail(this@GalleryNavigationActivity, galleryFile, previewImage, isPortraitOrientation)
                 view.setOnClickListener {
-                    VideoData.currentVideoProgress = 0
-                    navigateToActivity(VideoViewerActivity::class.java, galleryFile.file.uri) }
+                    VideoData.currentVideoMillis = 0
+                    navigateToActivity(VideoViewerVlcActivity::class.java, galleryFile.file.uri) }
             }
         }
     }

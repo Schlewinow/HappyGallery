@@ -6,10 +6,7 @@ import android.view.MenuItem
 import android.widget.RadioGroup
 import com.schlewinow.happygallery.R
 import com.schlewinow.happygallery.settings.GallerySettings
-import com.schlewinow.happygallery.tools.sorting.BaseFileComparator
-import com.schlewinow.happygallery.tools.sorting.FileDateComparator
-import com.schlewinow.happygallery.tools.sorting.FileNameComparator
-import com.schlewinow.happygallery.tools.sorting.FileSizeComparator
+import com.schlewinow.happygallery.tools.sorting.*
 
 class SettingsSortingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,8 +20,8 @@ class SettingsSortingActivity : AppCompatActivity() {
         val sortingRadioGroup: RadioGroup = findViewById(R.id.settingsSortingRadioGroup)
         val ascending = GallerySettings.sortingComparator.ascending
         when {
-            GallerySettings.sortingComparator is FileNameComparator && ascending -> sortingRadioGroup.check(R.id.settingsSortingNameAscendingRadioButton)
-            GallerySettings.sortingComparator is FileNameComparator && !ascending -> sortingRadioGroup.check(R.id.settingsSortingNameDescendingRadioButton)
+            GallerySettings.sortingComparator is NumberAwareFileNameComparator && ascending -> sortingRadioGroup.check(R.id.settingsSortingNameAscendingRadioButton)
+            GallerySettings.sortingComparator is NumberAwareFileNameComparator && !ascending -> sortingRadioGroup.check(R.id.settingsSortingNameDescendingRadioButton)
             GallerySettings.sortingComparator is FileSizeComparator && ascending -> sortingRadioGroup.check(R.id.settingsSortingSizeAscendingRadioButton)
             GallerySettings.sortingComparator is FileSizeComparator && !ascending -> sortingRadioGroup.check(R.id.settingsSortingSizeDescendingRadioButton)
             GallerySettings.sortingComparator is FileDateComparator && ascending -> sortingRadioGroup.check(R.id.settingsSortingLastModifiedAscendingRadioButton)
@@ -38,9 +35,9 @@ class SettingsSortingActivity : AppCompatActivity() {
 
                 when (selectedButtonId) {
                     R.id.settingsSortingNameAscendingRadioButton ->
-                        selectedComparator = FileNameComparator(true)
+                        selectedComparator = NumberAwareFileNameComparator(true)
                     R.id.settingsSortingNameDescendingRadioButton ->
-                        selectedComparator = FileNameComparator(false)
+                        selectedComparator = NumberAwareFileNameComparator(false)
                     R.id.settingsSortingSizeAscendingRadioButton ->
                         selectedComparator = FileSizeComparator(true)
                     R.id.settingsSortingSizeDescendingRadioButton ->

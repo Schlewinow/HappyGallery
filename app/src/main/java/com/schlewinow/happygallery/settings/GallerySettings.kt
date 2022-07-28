@@ -1,10 +1,7 @@
 package com.schlewinow.happygallery.settings
 
 import android.content.Context
-import com.schlewinow.happygallery.tools.sorting.BaseFileComparator
-import com.schlewinow.happygallery.tools.sorting.FileDateComparator
-import com.schlewinow.happygallery.tools.sorting.FileNameComparator
-import com.schlewinow.happygallery.tools.sorting.FileSizeComparator
+import com.schlewinow.happygallery.tools.sorting.*
 
 object GallerySettings {
     private const val sharedPreferencesAccess = "GallerySettings"
@@ -65,7 +62,7 @@ object GallerySettings {
         var output: String?
 
         when {
-            fileComparator is FileNameComparator -> output = "Name"
+            fileComparator is NumberAwareFileNameComparator -> output = "Name"
             fileComparator is FileSizeComparator -> output = "Size"
             fileComparator is FileDateComparator -> output = "LastModified"
             else -> output = null
@@ -91,7 +88,7 @@ object GallerySettings {
         val ascending = ascendingString.toBooleanStrict()
 
         return when(name) {
-            "Name" -> FileNameComparator(ascending)
+            "Name" -> NumberAwareFileNameComparator(ascending)
             "Size" -> FileSizeComparator(ascending)
             "LastModified" -> FileDateComparator(ascending)
             else -> defaultFileComparator

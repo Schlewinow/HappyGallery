@@ -2,6 +2,7 @@ package com.schlewinow.happygallery.model
 
 import android.content.Context
 import android.net.Uri
+import android.os.Parcelable
 import androidx.documentfile.provider.DocumentFile
 import com.schlewinow.happygallery.settings.GallerySettings
 import com.schlewinow.happygallery.tools.folders.DirectoryTools
@@ -18,13 +19,15 @@ object GalleryNavigationData {
 
     private val rootDirectoryGalleryContainers: HashMap<Uri, GalleryFileContainer> = HashMap()
 
+    var fileRecyclerViewState: Parcelable? = null
+
     var statusBarHeight: Int = 0
 
     var navigationBarHeight: Int = 0
 
     fun loadRootDirectoryGalleryContainers(rootDirectory: DocumentFile, context: Context) {
         val rootGalleryContainer = GalleryFileContainer(DocumentFileCompat.fromTreeUri(context, rootDirectory.uri)!!)
-        rootDirectoryGalleryContainers.put(rootDirectory.uri, rootGalleryContainer)
+        rootDirectoryGalleryContainers[rootDirectory.uri] = rootGalleryContainer
         // Start loading the sub-directories in background threads.
         DirectoryTools.preloadChildDirectories(rootGalleryContainer)
     }

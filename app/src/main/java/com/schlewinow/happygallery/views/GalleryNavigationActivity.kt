@@ -35,8 +35,16 @@ class GalleryNavigationActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
         setupActionBar()
         setupGallery()
+        fileRecycler?.layoutManager?.onRestoreInstanceState(GalleryNavigationData.fileRecyclerViewState)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        GalleryNavigationData.fileRecyclerViewState = fileRecycler?.layoutManager?.onSaveInstanceState()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -132,6 +140,10 @@ class GalleryNavigationActivity : AppCompatActivity() {
     }
 
     private fun navigateUp(target: GalleryFileContainer) {
+        if(!GalleryNavigationData.folderNavigationStack.isEmpty()) {
+            GalleryNavigationData.folderNavigationStack.last().galleryRecyclerState = fileRecycler?.layoutManager?.onSaveInstanceState()
+        }
+
         GalleryNavigationData.folderNavigationStack.addLast(target)
 
         setupActionBar()
@@ -144,6 +156,8 @@ class GalleryNavigationActivity : AppCompatActivity() {
 
             setupActionBar()
             updateGalleryElements()
+
+            fileRecycler?.layoutManager?.onRestoreInstanceState(GalleryNavigationData.folderNavigationStack.last().galleryRecyclerState)
             return true
         }
 

@@ -27,10 +27,10 @@
         android:layout_height="0dp"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        app:layout_constraintBottom_toTopOf="@+id/galleryFolderPreviewBottomGuideline"
-        app:layout_constraintEnd_toStartOf="@+id/galleryFolderPreviewRightGuideline"
-        app:layout_constraintStart_toStartOf="@+id/galleryFolderPreviewLeftGuideline"
-        app:layout_constraintTop_toTopOf="@+id/galleryFolderPreviewTopGuideline"
+        app:layout_constraintBottom_toTopOf="@+id/galleryFolderFadeBottomGuideline"
+        app:layout_constraintEnd_toStartOf="@+id/galleryFolderFadeRightGuideline"
+        app:layout_constraintStart_toStartOf="@+id/galleryFolderFadeLeftGuideline"
+        app:layout_constraintTop_toTopOf="@+id/galleryFolderFadeTopGuideline"
         app:srcCompat="@drawable/placeholder_image" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -38,28 +38,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
+        app:layout_constraintGuide_percent="0.055" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/galleryFolderFadeRightGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95" />
+        app:layout_constraintGuide_percent="0.945" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/galleryFolderFadeTopGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.15" />
+        app:layout_constraintGuide_percent="0.08" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/galleryFolderFadeBottomGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.95" />
+        app:layout_constraintGuide_percent="0.97" />
 
     <ImageView
         android:id="@+id/galleryFolderFade"
@@ -92,6 +92,7 @@
         android:id="@+id/galleryFolderChildrenCount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:textAlignment="textEnd"
         android:textColor="@color/gallery_element_text"
         android:textSize="8sp"
         app:layout_constraintEnd_toStartOf="@+id/galleryFolderTextRightGuideline"
@@ -101,39 +102,11 @@
         tools:text="Images: 0" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/galleryFolderPreviewTopGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.2" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/galleryFolderPreviewBottomGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.9" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/galleryFolderPreviewLeftGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.15" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/galleryFolderPreviewRightGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.85" />
-
-    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/galleryFolderTextTopGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.17" />
+        app:layout_constraintGuide_percent="0.1216545" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/galleryFolderTextBottomGuideline"

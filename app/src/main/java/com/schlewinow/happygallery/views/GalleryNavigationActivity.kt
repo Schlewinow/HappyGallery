@@ -38,6 +38,7 @@ class GalleryNavigationActivity : AppCompatActivity() {
 
         setupActionBar()
         setupGallery()
+
         fileRecycler?.layoutManager?.onRestoreInstanceState(GalleryNavigationData.fileRecyclerViewState)
     }
 
@@ -148,6 +149,7 @@ class GalleryNavigationActivity : AppCompatActivity() {
 
         setupActionBar()
         updateGalleryElements()
+        fileRecycler?.scrollToPosition(0)
     }
 
     private fun navigateBack(): Boolean {
@@ -157,7 +159,8 @@ class GalleryNavigationActivity : AppCompatActivity() {
             setupActionBar()
             updateGalleryElements()
 
-            fileRecycler?.layoutManager?.onRestoreInstanceState(GalleryNavigationData.folderNavigationStack.last().galleryRecyclerState)
+            // Restoring recycler scroll state won't work in root folder overview.
+            restoreFileRecyclerStateFromStack()
             return true
         }
 
@@ -170,6 +173,15 @@ class GalleryNavigationActivity : AppCompatActivity() {
             navigationIntent.data = data
         }
         startActivity(navigationIntent)
+    }
+
+    private fun restoreFileRecyclerStateFromStack() {
+        if(!GalleryNavigationData.folderNavigationStack.isEmpty()) {
+            val fileRecyclerState: Parcelable? = GalleryNavigationData.folderNavigationStack.last().galleryRecyclerState
+            if(fileRecyclerState != null) {
+                fileRecycler?.layoutManager?.onRestoreInstanceState(fileRecyclerState)
+            }
+        }
     }
 
     inner class NavigationRecyclerAdapter(private val files: MutableList<GalleryFileContainer>) : RecyclerView.Adapter<FileEntryHolder>() {
@@ -229,14 +241,18 @@ class GalleryNavigationActivity : AppCompatActivity() {
             val previewImage: ImageView = view.findViewById(R.id.galleryImagePreviewImage)
             previewImage.setImageDrawable(null)
 
+            val movieBorder: ImageView = view.findViewById(R.id.galleryImageMovieBorder)
+
             if(galleryFile.isImage) {
                 ImageFileTools.loadThumbnail(this@GalleryNavigationActivity, galleryFile, previewImage, isPortraitOrientation)
                 view.setOnClickListener { navigateToActivity(ImageViewerActivity::class.java, galleryFile.file.uri) }
+                movieBorder.visibility = View.GONE
             } else if(galleryFile.isVideo) {
                 VideoFileTools.loadThumbnail(this@GalleryNavigationActivity, galleryFile, previewImage, isPortraitOrientation)
                 view.setOnClickListener {
                     VideoData.currentVideoMillis = 0
                     navigateToActivity(VideoViewerVlcActivity::class.java, galleryFile.file.uri) }
+                movieBorder.visibility = View.VISIBLE
             }
         }
     }

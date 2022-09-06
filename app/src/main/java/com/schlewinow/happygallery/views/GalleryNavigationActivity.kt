@@ -250,7 +250,7 @@ class GalleryNavigationActivity : AppCompatActivity() {
             } else if(galleryFile.isVideo) {
                 VideoFileTools.loadThumbnail(this@GalleryNavigationActivity, galleryFile, previewImage, isPortraitOrientation)
                 view.setOnClickListener {
-                    VideoData.currentVideoMillis = 0
+                    VideoData.reset()
                     navigateToActivity(VideoViewerVlcActivity::class.java, galleryFile.file.uri) }
                 movieBorder.visibility = View.VISIBLE
             }

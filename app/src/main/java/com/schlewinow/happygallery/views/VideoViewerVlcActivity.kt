@@ -23,6 +23,11 @@ import org.videolan.libvlc.util.VLCVideoLayout
 import java.io.IOException
 import kotlin.math.roundToLong
 
+/**
+ * Activity showing a video.
+ * Uses VLC to play the video.
+ * May be targeted externally if the app is used to open a video file.
+ */
 class VideoViewerVlcActivity : AppCompatActivity() {
     private var libVLC: LibVLC? = null
     private var videoPlayer: MediaPlayer? = null

@@ -16,6 +16,10 @@ import com.schlewinow.happygallery.R
 import com.schlewinow.happygallery.model.GalleryFileContainer
 import com.schlewinow.happygallery.model.GalleryNavigationData
 
+/**
+ * Activity showing a single image.
+ * May be targeted externally if the app is used to open a single image file.
+ */
 class ImageViewerActivity : AppCompatActivity() {
     private var currentGalleryImage: GalleryFileContainer? = null
 

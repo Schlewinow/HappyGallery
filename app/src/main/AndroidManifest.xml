@@ -26,7 +26,31 @@
             android:name=".views.GalleryNavigationActivity"
             android:exported="false" />
         <activity
-            android:name=".views.MainActivity"
+            android:name=".views.StartVideoActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.OPENABLE" />
+                <data android:scheme="content" />
+                <data android:mimeType="video/*" />
+                <data android:host="*" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".views.StartImageActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.OPENABLE" />
+                <data android:scheme="content" />
+                <data android:mimeType="image/*" />
+                <data android:host="*" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".views.StartMainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

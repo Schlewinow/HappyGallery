@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.schlewinow.happygallery.R
 import com.schlewinow.happygallery.model.GalleryFileContainer
 import com.schlewinow.happygallery.model.GalleryNavigationData
@@ -65,7 +66,7 @@ class GalleryNavigationActivity : AppCompatActivity() {
                 return true
             }
             R.id.menu_item_increase_columns -> {
-                if(isPortraitOrientation) {
+                if (isPortraitOrientation) {
                     GallerySettings.fileColumnsPortrait++
                 } else {
                     GallerySettings.fileColumnsLandscape++
@@ -78,7 +79,7 @@ class GalleryNavigationActivity : AppCompatActivity() {
                 return true
             }
             R.id.menu_item_decrease_columns -> {
-                if(isPortraitOrientation) {
+                if (isPortraitOrientation) {
                     GallerySettings.fileColumnsPortrait--
                 } else {
                     GallerySettings.fileColumnsLandscape--
@@ -100,7 +101,7 @@ class GalleryNavigationActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if(!navigateBack()) {
+        if (!navigateBack()) {
             super.onBackPressed()
         }
     }
@@ -113,7 +114,7 @@ class GalleryNavigationActivity : AppCompatActivity() {
 
     private fun updateGalleryLayout() {
         var columns = GallerySettings.fileColumnsPortrait
-        if(!isPortraitOrientation) {
+        if (!isPortraitOrientation) {
            columns = GallerySettings.fileColumnsLandscape
         }
 
@@ -132,7 +133,7 @@ class GalleryNavigationActivity : AppCompatActivity() {
     }
 
     private fun setupActionBar() {
-        if(GalleryNavigationData.folderNavigationStack.isEmpty()) {
+        if (GalleryNavigationData.folderNavigationStack.isEmpty()) {
             supportActionBar?.title = resources.getString(R.string.gallery_title)
         } else {
             supportActionBar?.title = GalleryNavigationData.folderNavigationStack.last().name
@@ -141,7 +142,7 @@ class GalleryNavigationActivity : AppCompatActivity() {
     }
 
     private fun navigateUp(target: GalleryFileContainer) {
-        if(!GalleryNavigationData.folderNavigationStack.isEmpty()) {
+        if (!GalleryNavigationData.folderNavigationStack.isEmpty()) {
             GalleryNavigationData.folderNavigationStack.last().galleryRecyclerState = fileRecycler?.layoutManager?.onSaveInstanceState()
         }
 
@@ -153,7 +154,7 @@ class GalleryNavigationActivity : AppCompatActivity() {
     }
 
     private fun navigateBack(): Boolean {
-        if(!GalleryNavigationData.folderNavigationStack.isEmpty()) {
+        if (!GalleryNavigationData.folderNavigationStack.isEmpty()) {
             GalleryNavigationData.folderNavigationStack.removeLast()
 
             setupActionBar()
@@ -169,16 +170,16 @@ class GalleryNavigationActivity : AppCompatActivity() {
 
     private fun navigateToActivity(destination: Class<*>?, data: Uri? = null) {
         val navigationIntent = Intent(this, destination)
-        if(data != null) {
+        if (data != null) {
             navigationIntent.data = data
         }
         startActivity(navigationIntent)
     }
 
     private fun restoreFileRecyclerStateFromStack() {
-        if(!GalleryNavigationData.folderNavigationStack.isEmpty()) {
+        if (!GalleryNavigationData.folderNavigationStack.isEmpty()) {
             val fileRecyclerState: Parcelable? = GalleryNavigationData.folderNavigationStack.last().galleryRecyclerState
-            if(fileRecyclerState != null) {
+            if (fileRecyclerState != null) {
                 fileRecycler?.layoutManager?.onRestoreInstanceState(fileRecyclerState)
             }
         }
@@ -186,7 +187,7 @@ class GalleryNavigationActivity : AppCompatActivity() {
 
     inner class NavigationRecyclerAdapter(private val files: MutableList<GalleryFileContainer>) : RecyclerView.Adapter<FileEntryHolder>() {
         override fun getItemViewType(position: Int): Int {
-            if(files[position].isImage || files[position].isVideo) {
+            if (files[position].isImage || files[position].isVideo) {
                 return 1
             }
             return 0
@@ -201,7 +202,7 @@ class GalleryNavigationActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: FileEntryHolder, position: Int) {
-            when(holder.itemViewType) {
+            when (holder.itemViewType) {
                0 -> holder.setupDirectory(files[position])
                1 -> holder.setupImage(files[position])
             }
@@ -221,12 +222,14 @@ class GalleryNavigationActivity : AppCompatActivity() {
             childrenCountText.text ="${galleryFile.subFolders}-${galleryFile.subFiles}"
 
             val directoryPreviewImage: ImageView = view.findViewById(R.id.galleryFolderPreviewImage)
+            // Required in case there is an unfinished preview image loading process.
+            Glide.with(this@GalleryNavigationActivity).clear(directoryPreviewImage)
             directoryPreviewImage.setImageDrawable(null)
             val previewFile = DirectoryTools.getDirectoryPreviewImage(galleryFile)
-            if(previewFile != null) {
-                if(previewFile.isImage) {
+            if (previewFile != null) {
+                if (previewFile.isImage) {
                     ImageFileTools.loadThumbnail(this@GalleryNavigationActivity, previewFile, directoryPreviewImage, isPortraitOrientation)
-                } else if(previewFile.isVideo) {
+                } else if (previewFile.isVideo) {
                     VideoFileTools.loadThumbnail(this@GalleryNavigationActivity, previewFile, directoryPreviewImage, isPortraitOrientation)
                 }
             }
@@ -239,15 +242,17 @@ class GalleryNavigationActivity : AppCompatActivity() {
             nameText.text = galleryFile.name
 
             val previewImage: ImageView = view.findViewById(R.id.galleryImagePreviewImage)
+            // Required in case there is an unfinished preview image loading process.
+            Glide.with(this@GalleryNavigationActivity).clear(previewImage)
             previewImage.setImageDrawable(null)
 
             val movieBorder: ImageView = view.findViewById(R.id.galleryImageMovieBorder)
 
-            if(galleryFile.isImage) {
+            if (galleryFile.isImage) {
                 ImageFileTools.loadThumbnail(this@GalleryNavigationActivity, galleryFile, previewImage, isPortraitOrientation)
                 view.setOnClickListener { navigateToActivity(ImageViewerActivity::class.java, galleryFile.file.uri) }
                 movieBorder.visibility = View.GONE
-            } else if(galleryFile.isVideo) {
+            } else if (galleryFile.isVideo) {
                 VideoFileTools.loadThumbnail(this@GalleryNavigationActivity, galleryFile, previewImage, isPortraitOrientation)
                 view.setOnClickListener {
                     VideoData.reset()

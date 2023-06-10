@@ -51,6 +51,7 @@ object RootDirectorySettings {
 
         val prefs = context.getSharedPreferences(sharedPreferencesAccess, Context.MODE_PRIVATE)
         val editor = prefs.edit()
+        editor.clear()
 
         editor.putInt(sharedPreferencesAccess + "NumberRootFolders", rootDirectories.size)
         for((index, folder) in rootDirectories.withIndex()) {

@@ -100,10 +100,13 @@ class SettingsRootFolderActivity : AppCompatActivity() {
             pathText.text = file.uri.path
 
             val removeButton: Button = view.findViewById(R.id.rootFolderElementRemoveButton)
-            removeButton.setOnClickListener { v ->
+            removeButton.setOnClickListener {
+                // Update settings.
                 RootDirectorySettings.removeRootDirectory(file)
                 RootDirectorySettings.storeSettings(this@SettingsRootFolderActivity)
                 setupRootFolders()
+
+                // Update runtime directory hierarchy.
                 GalleryNavigationData.removeRootDirectoryGalleryContainers(file.uri)
             }
         }

@@ -1,5 +1,6 @@
 package com.schlewinow.happygallery.views
 
+import android.app.WallpaperManager
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
@@ -40,7 +41,7 @@ class ImageViewerActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN)
 
         // Load image data from intent.
-        if(intent != null && intent.data != null) {
+        if (intent != null && intent.data != null) {
             setup(intent.data!!)
         }
         else {
@@ -48,15 +49,36 @@ class ImageViewerActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu_image_viewer, menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when {
-            item.itemId == android.R.id.home -> {
+        when (item.itemId) {
+            android.R.id.home -> {
                 finish()
+                return true
+            }
+            R.id.menu_image_wallpaper -> {
+                setImageAsWallpaper()
                 return true
             }
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    /**
+     * Open an intent to set the currently shown image as wallpaper in the OS.
+     */
+    private fun setImageAsWallpaper() {
+        val wallpaperManager = WallpaperManager.getInstance(this)
+        if (wallpaperManager.isSetWallpaperAllowed) {
+            val wallpaperIntent = wallpaperManager.getCropAndSetWallpaperIntent(currentGalleryImage?.uri)
+            startActivity(wallpaperIntent)
+        }
     }
 
     private fun setup(imageUri: Uri) {
@@ -72,7 +94,7 @@ class ImageViewerActivity : AppCompatActivity() {
 
         val previousButton: ImageButton = findViewById(R.id.imageViewerPreviousButton)
         val previousImage: GalleryFileContainer? = findPreviousImage()
-        if(previousImage != null) {
+        if (previousImage != null) {
             previousButton.setOnClickListener {
                 navigateToActivity(ImageViewerActivity::class.java, previousImage.uri)
                 finish()
@@ -83,7 +105,7 @@ class ImageViewerActivity : AppCompatActivity() {
 
         val nextButton: ImageButton = findViewById(R.id.imageViewerNextButton)
         val nextImage: GalleryFileContainer? = findNextImage()
-        if(nextImage != null) {
+        if (nextImage != null) {
             nextButton.setOnClickListener {
                 navigateToActivity(ImageViewerActivity::class.java, nextImage.uri)
                 finish()
@@ -99,10 +121,10 @@ class ImageViewerActivity : AppCompatActivity() {
         val topGuideline: Guideline = findViewById(R.id.imageViewerTopGuideline)
         topGuideline.setGuidelineBegin(statusBarHeight)
 
-        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             val bottomGuideline: Guideline = findViewById(R.id.imageViewerBottomGuideline)
             bottomGuideline.setGuidelineEnd(navigationBarHeight)
-        } else if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        } else if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             val leftGuideline: Guideline = findViewById(R.id.imageViewerLeftGuideline)
             val rightGuideline: Guideline = findViewById(R.id.imageViewerRightGuideline)
 
@@ -113,7 +135,7 @@ class ImageViewerActivity : AppCompatActivity() {
                 rotation = getWindowManager().getDefaultDisplay().getRotation()
             }
 
-            if(rotation == Surface.ROTATION_90) {
+            if (rotation == Surface.ROTATION_90) {
                 leftGuideline.setGuidelineBegin(0)
                 rightGuideline.setGuidelineEnd(navigationBarHeight)
             } else if (rotation == Surface.ROTATION_270) {
@@ -129,9 +151,9 @@ class ImageViewerActivity : AppCompatActivity() {
 
         // Find the next image in the current folder.
         var nextIndex = currentIndex
-        while(nextIndex < currentDirFiles.size - 1) {
+        while (nextIndex < currentDirFiles.size - 1) {
             ++nextIndex
-            if(currentDirFiles[nextIndex].isImage) {
+            if (currentDirFiles[nextIndex].isImage) {
                 return currentDirFiles[nextIndex]
             }
         }
@@ -145,7 +167,7 @@ class ImageViewerActivity : AppCompatActivity() {
 
         // Find the previous image in the current folder.
         var previousIndex = currentIndex
-        while(previousIndex > 0) {
+        while (previousIndex > 0) {
             --previousIndex
             if(currentDirFiles[previousIndex].isImage) {
                 return currentDirFiles[previousIndex]
@@ -157,7 +179,7 @@ class ImageViewerActivity : AppCompatActivity() {
 
     private fun navigateToActivity(destination: Class<*>?, data: Uri? = null) {
         val navigationIntent = Intent(this, destination)
-        if(data != null) {
+        if (data != null) {
             navigationIntent.data = data
         }
         startActivity(navigationIntent)

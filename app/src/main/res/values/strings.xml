@@ -1,9 +1,12 @@
 <resources>
     <string name="app_name">H-Gal</string>
+
     <string name="menu_sorting">Sorting</string>
     <string name="menu_increase_columns">Increase columns by one</string>
     <string name="menu_decrease_columns">Decrease columns by one</string>
     <string name="menu_root_folders">Root folders</string>
+
+    <string name="menu_image_wallpaper">Set as wallpaper</string>
 
     <string name="gallery_title">Happy Gallery</string>
     <string name="gallery_folder_child_info">folders: %1$d \tfiles: %2$d</string>

@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">H-Gal</string>
 
+    <string name="live_video_service_label">H-Gal Video Live Wallpaper</string>
+    <string name="live_video_service_description">H-Gal Video Live Wallpaper</string>
+
     <string name="menu_sorting">Sorting</string>
     <string name="menu_increase_columns">Increase columns by one</string>
     <string name="menu_decrease_columns">Decrease columns by one</string>

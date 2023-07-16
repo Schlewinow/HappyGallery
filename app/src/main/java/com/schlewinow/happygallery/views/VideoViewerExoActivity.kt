@@ -1,9 +1,6 @@
 package com.schlewinow.happygallery.views
 
-import android.content.res.Configuration
-import android.graphics.Color
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
@@ -11,9 +8,7 @@ import android.view.*
 import android.widget.ImageButton
 import android.widget.SeekBar
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.constraintlayout.widget.Guideline
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -23,7 +18,7 @@ import com.schlewinow.happygallery.model.VideoData
 import com.schlewinow.happygallery.tools.folders.VideoFileTools
 import java.lang.Thread.sleep
 
-class VideoViewerExoActivity : AppCompatActivity() {
+class VideoViewerExoActivity : VideoViewerBaseActivity() {
     private var videoPlayer: ExoPlayer? = null
     private var videoProgressBar: SeekBar? = null
     private var videoProgressTimeText: TextView? = null
@@ -38,26 +33,11 @@ class VideoViewerExoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video_viewer_exo)
         setSupportActionBar(findViewById(R.id.videoViewerToolbar))
-
+        setupTransparentSystemBars()
         mainHandler = Handler(mainLooper)
 
-        // Transparent system bars at top and bottom.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.setDecorFitsSystemWindows(false)
-        } else {
-            window?.decorView?.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        }
-        window.statusBarColor = Color.TRANSPARENT
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN)
-
-        // Load image data from intent.
-        if(intent != null && intent.data != null) {
-            setup(intent.data!!)
-        }
-        else {
-            finish()
+        if (videoUri != null) {
+            setup(videoUri!!)
         }
     }
 
@@ -296,51 +276,5 @@ class VideoViewerExoActivity : AppCompatActivity() {
 
         surfaceView.layoutParams = layoutParams
         surfaceView.isClickable = true
-    }
-
-    private fun makeTimeString(milliseconds: Long): String {
-        val seconds = (milliseconds / 1000) % 60
-        val minutes = (milliseconds / 60000) % 60
-        val hours = milliseconds / 3600000
-
-        var timeString = "$hours:"
-        if(minutes < 10) {
-            timeString += "0"
-        }
-        timeString += "$minutes:"
-        if(seconds < 10) {
-            timeString += "0"
-        }
-        timeString += seconds.toString()
-
-        return timeString
-    }
-
-    private fun setupGuidelines(statusBarHeight: Int, navigationBarHeight: Int) {
-        val topGuideline: Guideline = findViewById(R.id.videoViewerTopGuideline)
-        topGuideline.setGuidelineBegin(statusBarHeight)
-
-        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            val bottomGuideline: Guideline = findViewById(R.id.videoViewerBottomGuideline)
-            bottomGuideline.setGuidelineEnd(navigationBarHeight)
-        } else if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            val leftGuideline: Guideline = findViewById(R.id.videoViewerLeftGuideline)
-            val rightGuideline: Guideline = findViewById(R.id.videoViewerRightGuideline)
-
-            val rotation: Int
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                rotation = display?.rotation ?: Surface.ROTATION_90
-            } else {
-                rotation = windowManager.getDefaultDisplay().getRotation()
-            }
-
-            if (rotation == Surface.ROTATION_90) {
-                leftGuideline.setGuidelineBegin(0)
-                rightGuideline.setGuidelineEnd(navigationBarHeight)
-            } else if (rotation == Surface.ROTATION_270) {
-                leftGuideline.setGuidelineBegin(navigationBarHeight)
-                rightGuideline.setGuidelineEnd(0)
-            }
-        }
     }
 }

@@ -61,9 +61,12 @@ object DirectoryTools {
             directoryLoaderThread.quitSafely()
             --activeThreadCount
 
-            // One thread finished, a new one may start now.
-            if (preloadDirectoryQueue.isNotEmpty()) {
-                startPreloadChildDirectoryThread(preloadDirectoryQueue.removeFirst())
+            // Avoid racing condition removing an element from an already empty queue.
+            synchronized(preloadDirectoryQueue) {
+                // One thread finished, a new one may start now.
+                if (preloadDirectoryQueue.isNotEmpty()) {
+                    startPreloadChildDirectoryThread(preloadDirectoryQueue.removeFirst())
+                }
             }
         }
     }

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.schlewinow.happygallery">
 
-    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
 
     <uses-feature
         android:name="android.software.live_wallpaper"
@@ -16,6 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HappyGallery">
+        <activity
+            android:name=".views.SettingsVideoLiveWallpaperActivity"
+            android:exported="false" />
         <activity
             android:name=".views.SettingsRootFolderActivity"
             android:exported="false" />
@@ -36,8 +39,10 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.OPENABLE" />
+
                 <data android:scheme="content" />
                 <data android:mimeType="video/*" />
                 <data android:host="*" />
@@ -48,8 +53,10 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.OPENABLE" />
+
                 <data android:scheme="content" />
                 <data android:mimeType="image/*" />
                 <data android:host="*" />
@@ -60,18 +67,20 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <service
-            android:exported="true"
             android:name=".tools.VideoLiveWallpaperExoService"
+            android:exported="true"
             android:label="@string/live_video_service_label"
             android:permission="android.permission.BIND_WALLPAPER">
             <intent-filter>
                 <action android:name="android.service.wallpaper.WallpaperService" />
             </intent-filter>
+
             <meta-data
                 android:name="android.service.wallpaper"
                 android:resource="@xml/video_live_wallpaper" />

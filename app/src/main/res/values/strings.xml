@@ -11,6 +11,9 @@
 
     <string name="menu_image_wallpaper">Set as wallpaper</string>
 
+    <string name="menu_video_wallpaper">Set as wallpaper</string>
+    <string name="menu_video_wallpaper_settings">Live wallpaper settings</string>
+
     <string name="gallery_title">Happy Gallery</string>
     <string name="gallery_folder_child_info">folders: %1$d \tfiles: %2$d</string>
 
@@ -25,4 +28,11 @@
     <string name="settings_root_folder_title">Gallery root folder settings</string>
     <string name="settings_root_folder_add_button">Add folder</string>
     <string name="settings_root_folder_delete_button">Remove</string>
+
+    <string name="settings_video_live_wallpaper_title">Video live wallpaper settings</string>
+    <string name="settings_video_live_wallpaper_portrait_title">Portrait mode</string>
+    <string name="settings_video_live_wallpaper_landscape_title">Landscape mode</string>
+    <string name="settings_video_live_wallpaper_scale_mode">Scale mode</string>
+    <string name="settings_video_live_wallpaper_scale_mode_fit">Scale to fit</string>
+    <string name="settings_video_live_wallpaper_scale_mode_fit_crop">Scale to fit with cropping</string>
 </resources>

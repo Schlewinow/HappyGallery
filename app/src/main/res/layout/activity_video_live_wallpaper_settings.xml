@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.SettingsVideoLiveWallpaperActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/settingsVideoLiveWallpaperToolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/content_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settingsVideoLiveWallpaperToolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/settingsVideoLiveWallpaperPortraitLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/settingsVideoLiveWallpaperPortraitTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_video_live_wallpaper_portrait_title"
+                android:textColor="@color/settings_text"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/settingsVideoLiveWallpaperPortraitScaleModeTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/settings_video_live_wallpaper_scale_mode"
+                android:textColor="@color/settings_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/settingsVideoLiveWallpaperPortraitTitle" />
+
+            <RadioGroup
+                android:id="@+id/settingsVideoLiveWallpaperPortraitScaleModeGroup"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/settingsVideoLiveWallpaperPortraitScaleModeTitle">
+
+                <RadioButton
+                    android:id="@+id/settingsVideoLiveWallpaperPortraitScaleModeButton1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_video_live_wallpaper_scale_mode_fit"
+                    android:textColor="@color/settings_text" />
+
+                <RadioButton
+                    android:id="@+id/settingsVideoLiveWallpaperPortraitScaleModeButton2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_video_live_wallpaper_scale_mode_fit_crop"
+                    android:textColor="@color/settings_text" />
+            </RadioGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/settingsVideoLiveWallpaperLandscapeLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/settingsVideoLiveWallpaperPortraitLayout">
+
+            <TextView
+                android:id="@+id/settingsVideoLiveWallpaperLandscapeTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_video_live_wallpaper_landscape_title"
+                android:textColor="@color/settings_text"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/settingsVideoLiveWallpaperLandscapeScaleModeTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/settings_video_live_wallpaper_scale_mode"
+                android:textColor="@color/settings_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/settingsVideoLiveWallpaperLandscapeTitle" />
+
+            <RadioGroup
+                android:id="@+id/settingsVideoLiveWallpaperLandscapeScaleModeGroup"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/settingsVideoLiveWallpaperLandscapeScaleModeTitle">
+
+                <RadioButton
+                    android:id="@+id/settingsVideoLiveWallpaperLandscapeScaleModeButton1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_video_live_wallpaper_scale_mode_fit"
+                    android:textColor="@color/settings_text" />
+
+                <RadioButton
+                    android:id="@+id/settingsVideoLiveWallpaperLandscapeScaleModeButton2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_video_live_wallpaper_scale_mode_fit_crop"
+                    android:textColor="@color/settings_text" />
+            </RadioGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

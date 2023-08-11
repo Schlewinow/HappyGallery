@@ -71,6 +71,10 @@ open class VideoViewerBaseActivity : AppCompatActivity() {
                 setVideoAsWallpaper(videoUri)
                 return true
             }
+            R.id.menu_video_wallpaper_settings -> {
+                navigateToVideoWallpaperSettings()
+                return true
+            }
         }
 
         return super.onOptionsItemSelected(item)
@@ -91,6 +95,14 @@ open class VideoViewerBaseActivity : AppCompatActivity() {
             wallpaperIntent.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT, wallpaperComponentName)
             startActivity(wallpaperIntent)
         }
+    }
+
+    /**
+     * Open video live wallpaper settings.
+     */
+    private fun navigateToVideoWallpaperSettings() {
+        val navigationIntent = Intent(this, SettingsVideoLiveWallpaperActivity::class.java)
+        startActivity(navigationIntent)
     }
 
     /**

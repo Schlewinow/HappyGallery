@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_video_wallpaper"
-        android:title="@string/menu_image_wallpaper" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/menu_video_wallpaper" />
+    <item
+        android:id="@+id/menu_video_wallpaper_settings"
+        android:title="@string/menu_video_wallpaper_settings" />
 </menu>
 

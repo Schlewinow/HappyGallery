@@ -23,13 +23,13 @@ object LiveWallpaperSettings {
     /**
      * Visualization settings for the live wallpaper while in portrait mode.
      */
-    var portraitSettings: LiveWallpaperOrientationSettings? = null
+    var portraitSettings: LiveWallpaperOrientationSettings = LiveWallpaperOrientationSettings()
         private set
 
     /**
      * Visualization settings for the live wallpaper while in landscape mode.
      */
-    var landscapeSettings: LiveWallpaperOrientationSettings? = null
+    var landscapeSettings: LiveWallpaperOrientationSettings = LiveWallpaperOrientationSettings()
         private set
 
     /**
@@ -48,9 +48,8 @@ object LiveWallpaperSettings {
             videoLiveWallpaperUri = Uri.parse(liveVideoWallpaperUriString)
         }
 
-        portraitSettings = LiveWallpaperOrientationSettings()
-
-        landscapeSettings = LiveWallpaperOrientationSettings()
+        portraitSettings.restoreSettings(prefs,"portrait")
+        landscapeSettings.restoreSettings(prefs,"landscape")
     }
 
     /**
@@ -59,7 +58,7 @@ object LiveWallpaperSettings {
      * @param context Local app context.
      */
     fun storeSettings(context: Context?) {
-        if(context == null) {
+        if (context == null) {
             return
         }
 
@@ -68,5 +67,8 @@ object LiveWallpaperSettings {
 
         editor.putString(SHARED_PREFERENCES_ACCESS + PREF_LIVE_WALLPAPER_URI, videoLiveWallpaperUri.toString())
         editor.apply()
+
+        portraitSettings.storeSettings(prefs, "portrait")
+        landscapeSettings.storeSettings(prefs, "landscape")
     }
 }

@@ -96,6 +96,32 @@
         app:layout_constraintEnd_toStartOf="@+id/imageViewerRightGuideline"
         app:srcCompat="@drawable/icon_arrow_left" />
 
+    <ImageButton
+        android:id="@+id/imageViewerRotateLeftButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:alpha="0.5"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageViewerPreviousButton"
+        app:srcCompat="@drawable/icon_rotate_left" />
+
+    <ImageButton
+        android:id="@+id/imageViewerRotateRightButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:alpha="0.5"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewerNextButton"
+        app:srcCompat="@drawable/icon_rotate_right" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/imageViewerTopGuideline"
         android:layout_width="wrap_content"
@@ -116,5 +142,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_end="48dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/imageViewerCenterGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

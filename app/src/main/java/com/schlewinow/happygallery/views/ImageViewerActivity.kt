@@ -12,7 +12,6 @@ import android.view.*
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.constraintlayout.widget.Guideline
-import androidx.core.net.toFile
 import com.bumptech.glide.Glide
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
@@ -91,21 +90,13 @@ class ImageViewerActivity : AppCompatActivity() {
         supportActionBar?.title = currentGalleryImage?.name
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val imageView: SubsamplingScaleImageView = findViewById(R.id.imageViewerImageTouchView)
-        val imageFallbackView: ImageView = findViewById(R.id.imageViewerFallbackImageView)
-
         // The special scaling image view does not support GIF, so use a regular image view as fallback.
         val useFallback: Boolean = imageUri.toString().endsWith("gif", true)
         if (useFallback) {
-            imageView.visibility = View.GONE
-            imageFallbackView.visibility = View.VISIBLE
-            Glide.with(this)
-                .load(imageUri)
-                .into(imageFallbackView)
+            setupFallbackImageMode(imageUri)
         }
         else {
-            imageView.setMinimumDpi(40)
-            imageView.setImage(ImageSource.uri(imageUri))
+            setupScaleImageMode(imageUri)
         }
 
         val previousButton: ImageButton = findViewById(R.id.imageViewerPreviousButton)
@@ -131,6 +122,50 @@ class ImageViewerActivity : AppCompatActivity() {
         }
 
         setupGuidelines(GalleryNavigationData.statusBarHeight, GalleryNavigationData.navigationBarHeight)
+    }
+
+    private fun setupScaleImageMode(imageUri: Uri) {
+        val imageView: SubsamplingScaleImageView = findViewById(R.id.imageViewerImageTouchView)
+        imageView.setMinimumDpi(40)
+        imageView.orientation = SubsamplingScaleImageView.ORIENTATION_0
+        imageView.setImage(ImageSource.uri(imageUri))
+
+        val rotateLeftButton: ImageButton = findViewById(R.id.imageViewerRotateLeftButton)
+        rotateLeftButton.setOnClickListener {
+            var targetOrientation: Int = SubsamplingScaleImageView.ORIENTATION_0
+            when (imageView.orientation) {
+                SubsamplingScaleImageView.ORIENTATION_0 -> targetOrientation = SubsamplingScaleImageView.ORIENTATION_270
+                SubsamplingScaleImageView.ORIENTATION_270 -> targetOrientation = SubsamplingScaleImageView.ORIENTATION_180
+                SubsamplingScaleImageView.ORIENTATION_180 -> targetOrientation = SubsamplingScaleImageView.ORIENTATION_90
+            }
+
+            imageView.orientation = targetOrientation
+            imageView.setImage(ImageSource.uri(imageUri))
+        }
+
+        val rotateRightButton: ImageButton = findViewById(R.id.imageViewerRotateRightButton)
+        rotateRightButton.setOnClickListener {
+            var targetOrientation: Int = SubsamplingScaleImageView.ORIENTATION_0
+            when (imageView.orientation) {
+                SubsamplingScaleImageView.ORIENTATION_0 -> targetOrientation = SubsamplingScaleImageView.ORIENTATION_90
+                SubsamplingScaleImageView.ORIENTATION_90 -> targetOrientation = SubsamplingScaleImageView.ORIENTATION_180
+                SubsamplingScaleImageView.ORIENTATION_180 -> targetOrientation = SubsamplingScaleImageView.ORIENTATION_270
+            }
+
+            imageView.orientation = targetOrientation
+            imageView.setImage(ImageSource.uri(imageUri))
+        }
+    }
+
+    private fun setupFallbackImageMode(imageUri: Uri) {
+        val imageView: SubsamplingScaleImageView = findViewById(R.id.imageViewerImageTouchView)
+        imageView.visibility = View.GONE
+
+        val imageFallbackView: ImageView = findViewById(R.id.imageViewerFallbackImageView)
+        imageFallbackView.visibility = View.VISIBLE
+        Glide.with(this)
+            .load(imageUri)
+            .into(imageFallbackView)
     }
 
     private fun setupGuidelines(statusBarHeight: Int, navigationBarHeight: Int) {

@@ -19,10 +19,11 @@ object ImageFileTools {
      * (Or rather, a currently supported image file)
      */
     fun checkIfImage(galleryFile: GalleryFileContainer): Boolean {
-        val stringFileType = galleryFile.type
+        val stringFileType = galleryFile.type.lowercase()
         if (stringFileType == "jpg" || stringFileType == "jpeg"
             || stringFileType == "png"
-            || stringFileType == "webp") {
+            || stringFileType == "webp"
+            || stringFileType == "gif") {
             return true
         }
         return false

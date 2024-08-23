@@ -10,7 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.constraintlayout.widget.Guideline
+import androidx.core.net.toFile
+import com.bumptech.glide.Glide
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.schlewinow.happygallery.R
@@ -88,9 +91,22 @@ class ImageViewerActivity : AppCompatActivity() {
         supportActionBar?.title = currentGalleryImage?.name
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val imageView: SubsamplingScaleImageView = findViewById(R.id.ImageTouchView)
-        imageView.setMinimumDpi(40)
-        imageView.setImage(ImageSource.uri(imageUri))
+        val imageView: SubsamplingScaleImageView = findViewById(R.id.imageViewerImageTouchView)
+        val imageFallbackView: ImageView = findViewById(R.id.imageViewerFallbackImageView)
+
+        // The special scaling image view does not support GIF, so use a regular image view as fallback.
+        val useFallback: Boolean = imageUri.toString().endsWith("gif", true)
+        if (useFallback) {
+            imageView.visibility = View.GONE
+            imageFallbackView.visibility = View.VISIBLE
+            Glide.with(this)
+                .load(imageUri)
+                .into(imageFallbackView)
+        }
+        else {
+            imageView.setMinimumDpi(40)
+            imageView.setImage(ImageSource.uri(imageUri))
+        }
 
         val previousButton: ImageButton = findViewById(R.id.imageViewerPreviousButton)
         val previousImage: GalleryFileContainer? = findPreviousImage()

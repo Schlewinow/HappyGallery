@@ -18,8 +18,10 @@ object VideoFileTools {
      * (Or rather, a currently supported image file)
      */
     fun checkIfVideo(galleryFile: GalleryFileContainer): Boolean {
-        val stringFileType = galleryFile.type
+        val stringFileType = galleryFile.type.lowercase()
         if (stringFileType == "mp4"
+            || stringFileType == "mov"
+            || stringFileType == "m4v"
             || stringFileType == "wmv") {
             return true
         }

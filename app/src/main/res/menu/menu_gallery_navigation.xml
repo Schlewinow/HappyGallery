@@ -9,6 +9,12 @@
         android:id="@+id/menu_item_decrease_columns"
         android:title="@string/menu_decrease_columns" />
     <item
+        android:id="@+id/menu_item_show_hidden_files"
+        android:title="@string/menu_show_hidden_files" />
+    <item
+        android:id="@+id/menu_item_hide_hidden_files"
+        android:title="@string/menu_hide_hidden_files" />
+    <item
         android:id="@+id/menu_item_root_folders"
         android:title="@string/menu_root_folders" />
 </menu>

@@ -7,6 +7,8 @@
     <string name="menu_sorting">Sorting</string>
     <string name="menu_increase_columns">Increase columns by one</string>
     <string name="menu_decrease_columns">Decrease columns by one</string>
+    <string name="menu_show_hidden_files">Show hidden files</string>
+    <string name="menu_hide_hidden_files">Ignore hidden files</string>
     <string name="menu_root_folders">Root folders</string>
 
     <string name="menu_image_wallpaper">Set as wallpaper</string>

@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Parcelable
 import com.schlewinow.happygallery.tools.folders.ImageFileTools
 import com.lazygeniouz.filecompat.file.DocumentFileCompat
+import com.schlewinow.happygallery.settings.GallerySettings
 import com.schlewinow.happygallery.tools.folders.VideoFileTools
 
 class GalleryFileContainer(val file: DocumentFileCompat) {
@@ -34,10 +35,16 @@ class GalleryFileContainer(val file: DocumentFileCompat) {
         }
 
     fun getChildren() : List<GalleryFileContainer> {
-        if(isDirectory && children.isEmpty()) {
+        if (isDirectory && children.isEmpty()) {
             loadChildFiles()
         }
-        return children
+
+        if (GallerySettings.showHiddenFiles) {
+            return children
+        }
+        else {
+            return children.filter { child -> !child.name.startsWith(".") }
+        }
     }
 
     fun loadChildFiles() {

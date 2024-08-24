@@ -91,6 +91,18 @@ class GalleryNavigationActivity : AppCompatActivity() {
                 updateGalleryLayout()
                 return true
             }
+            R.id.menu_item_show_hidden_files -> {
+                GallerySettings.showHiddenFiles = true
+                GallerySettings.storeSettings(this)
+                updateGalleryElements()
+                return true
+            }
+            R.id.menu_item_hide_hidden_files -> {
+                GallerySettings.showHiddenFiles = false
+                GallerySettings.storeSettings(this)
+                updateGalleryElements()
+                return true
+            }
             R.id.menu_item_root_folders -> {
                 navigateToActivity(SettingsRootFolderActivity::class.java)
                 return true

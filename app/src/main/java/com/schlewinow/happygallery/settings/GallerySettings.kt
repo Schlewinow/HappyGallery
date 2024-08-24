@@ -8,6 +8,7 @@ object GallerySettings {
     private const val defaultFileColumnsPortrait = 3
     private const val defaultFileColumnsLandscape = 4
     private val defaultFileComparator = FileDateComparator(true)
+    private const val defaultShowHiddenFiles = false
 
     var fileColumnsPortrait: Int = defaultFileColumnsPortrait
         set(value) {
@@ -25,6 +26,8 @@ object GallerySettings {
 
     var sortingComparator: BaseFileComparator = defaultFileComparator
 
+    var showHiddenFiles: Boolean = defaultShowHiddenFiles
+
     fun restoreSettings(context: Context?) {
         if(context == null) {
             return
@@ -34,6 +37,7 @@ object GallerySettings {
         fileColumnsPortrait = prefs.getInt(sharedPreferencesAccess + "FileColumnsPortrait", defaultFileColumnsPortrait)
         fileColumnsLandscape= prefs.getInt(sharedPreferencesAccess + "FileColumnsLandscape", defaultFileColumnsLandscape)
         sortingComparator = stringToComparator(prefs.getString(sharedPreferencesAccess + "SortingComparator", null))
+        showHiddenFiles = prefs.getBoolean(sharedPreferencesAccess + "ShowHiddenFiles", defaultShowHiddenFiles)
     }
 
     fun storeSettings(context: Context?) {
@@ -51,6 +55,8 @@ object GallerySettings {
         if(sortingComparatorString != null) {
             editor.putString(sharedPreferencesAccess + "SortingComparator", sortingComparatorString)
         }
+
+        editor.putBoolean(sharedPreferencesAccess + "ShowHiddenFiles", showHiddenFiles)
 
         editor.apply()
     }

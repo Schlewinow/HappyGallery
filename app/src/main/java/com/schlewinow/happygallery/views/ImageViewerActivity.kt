@@ -3,7 +3,9 @@ package com.schlewinow.happygallery.views
 import android.app.WallpaperManager
 import android.content.Intent
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Matrix
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +20,8 @@ import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.schlewinow.happygallery.R
 import com.schlewinow.happygallery.model.GalleryFileContainer
 import com.schlewinow.happygallery.model.GalleryNavigationData
+import kotlin.math.absoluteValue
+import kotlin.math.sign
 
 /**
  * Activity showing a single image.
@@ -25,6 +29,8 @@ import com.schlewinow.happygallery.model.GalleryNavigationData
  */
 class ImageViewerActivity : AppCompatActivity() {
     private var currentGalleryImage: GalleryFileContainer? = null
+
+    private var fallbackRotation: Float = 0f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,7 +113,7 @@ class ImageViewerActivity : AppCompatActivity() {
                 finish()
             }
         } else {
-            previousButton.visibility = View.GONE
+            previousButton.visibility = View.INVISIBLE
         }
 
         val nextButton: ImageButton = findViewById(R.id.imageViewerNextButton)
@@ -118,7 +124,7 @@ class ImageViewerActivity : AppCompatActivity() {
                 finish()
             }
         } else {
-            nextButton.visibility = View.GONE
+            nextButton.visibility = View.INVISIBLE
         }
 
         setupGuidelines(GalleryNavigationData.statusBarHeight, GalleryNavigationData.navigationBarHeight)
@@ -166,6 +172,59 @@ class ImageViewerActivity : AppCompatActivity() {
         Glide.with(this)
             .load(imageUri)
             .into(imageFallbackView)
+
+        val rotateLeftButton: ImageButton = findViewById(R.id.imageViewerRotateLeftButton)
+        rotateLeftButton.setOnClickListener {
+            rotateImageViewContentBy90(imageFallbackView, -1f)
+        }
+
+        val rotateRightButton: ImageButton = findViewById(R.id.imageViewerRotateRightButton)
+        rotateRightButton.setOnClickListener {
+            rotateImageViewContentBy90(imageFallbackView, 1f)
+        }
+    }
+
+    /**
+     * Image view content must be rotated manually via transformation matrix operations.
+     * This function allows to rotate the ImageView content in 90 degree steps.
+     */
+    private fun rotateImageViewContentBy90(imageView: ImageView, direction: Float) {
+        imageView.scaleType = ImageView.ScaleType.MATRIX
+        val transformMatrix = Matrix()
+
+        // Apply rotation
+        val imageWidth: Int = imageView.drawable.bounds.width()
+        val imageHeight: Int = imageView.drawable.bounds.height()
+        fallbackRotation += 90f * direction.sign
+
+        transformMatrix.postRotate(fallbackRotation, (imageWidth / 2).toFloat(), (imageHeight / 2).toFloat())
+
+        // Scale to fit screen size.
+        val screenWidth: Int = Resources.getSystem().displayMetrics.widthPixels
+        val screenHeight: Int = Resources.getSystem().displayMetrics.heightPixels
+        val rotatedImageWidth =  if (fallbackRotation.toInt() % 180 == 0) imageWidth else imageHeight
+        val rotatedImageHeight = if (fallbackRotation.toInt() % 180 == 0) imageHeight else imageWidth
+        val xOffset = screenWidth - rotatedImageWidth
+        val yOffset = screenHeight - rotatedImageHeight
+        var scaleFactor = 1f
+
+        if (xOffset.absoluteValue < yOffset.absoluteValue) {
+            scaleFactor = screenWidth.toFloat() / rotatedImageWidth.toFloat()
+        }
+        else {
+            scaleFactor = screenHeight.toFloat() / rotatedImageHeight.toFloat()
+        }
+        transformMatrix.postScale(scaleFactor, scaleFactor)
+
+        // Center image on screen.
+        if (screenHeight > screenWidth) {
+            transformMatrix.postTranslate(-xOffset.toFloat() * scaleFactor / 2f, yOffset.toFloat() / 2f)
+        }
+        else {
+            transformMatrix.postTranslate(xOffset.toFloat() / 2f, -yOffset.toFloat() * scaleFactor / 2f)
+        }
+
+        imageView.imageMatrix = transformMatrix
     }
 
     private fun setupGuidelines(statusBarHeight: Int, navigationBarHeight: Int) {

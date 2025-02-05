@@ -18,8 +18,9 @@ import com.bumptech.glide.Glide
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.schlewinow.happygallery.R
-import com.schlewinow.happygallery.model.GalleryFileContainer
 import com.schlewinow.happygallery.model.GalleryNavigationData
+import com.schlewinow.happygallery.model.item.GalleryBaseContainer
+import com.schlewinow.happygallery.model.item.GalleryFileContainer
 import kotlin.math.absoluteValue
 import kotlin.math.sign
 
@@ -28,7 +29,7 @@ import kotlin.math.sign
  * May be targeted externally if the app is used to open a single image file.
  */
 class ImageViewerActivity : AppCompatActivity() {
-    private var currentGalleryImage: GalleryFileContainer? = null
+    private var currentGalleryImage: GalleryBaseContainer? = null
 
     private var fallbackRotation: Float = 0f
 
@@ -91,7 +92,7 @@ class ImageViewerActivity : AppCompatActivity() {
 
     private fun setup(imageUri: Uri) {
         val currentDirFiles = GalleryNavigationData.currentDirectoryFiles
-        currentGalleryImage = currentDirFiles.find { file -> file.file.uri == imageUri }
+        currentGalleryImage = currentDirFiles.find { file -> file.contentFile.uri == imageUri }
 
         supportActionBar?.title = currentGalleryImage?.name
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -106,7 +107,7 @@ class ImageViewerActivity : AppCompatActivity() {
         }
 
         val previousButton: ImageButton = findViewById(R.id.imageViewerPreviousButton)
-        val previousImage: GalleryFileContainer? = findPreviousImage()
+        val previousImage: GalleryBaseContainer? = findPreviousImage()
         if (previousImage != null) {
             previousButton.setOnClickListener {
                 navigateToActivity(ImageViewerActivity::class.java, previousImage.uri)
@@ -117,7 +118,7 @@ class ImageViewerActivity : AppCompatActivity() {
         }
 
         val nextButton: ImageButton = findViewById(R.id.imageViewerNextButton)
-        val nextImage: GalleryFileContainer? = findNextImage()
+        val nextImage: GalleryBaseContainer? = findNextImage()
         if (nextImage != null) {
             nextButton.setOnClickListener {
                 navigateToActivity(ImageViewerActivity::class.java, nextImage.uri)
@@ -255,7 +256,7 @@ class ImageViewerActivity : AppCompatActivity() {
         }
     }
 
-    private fun findNextImage() : GalleryFileContainer? {
+    private fun findNextImage() : GalleryBaseContainer? {
         val currentDirFiles = GalleryNavigationData.currentDirectoryFiles
         val currentIndex = currentDirFiles.indexOf(currentGalleryImage)
 
@@ -263,15 +264,17 @@ class ImageViewerActivity : AppCompatActivity() {
         var nextIndex = currentIndex
         while (nextIndex < currentDirFiles.size - 1) {
             ++nextIndex
-            if (currentDirFiles[nextIndex].isImage) {
-                return currentDirFiles[nextIndex]
+            if (currentDirFiles[nextIndex].isGalleryFile) {
+                if ((currentDirFiles[nextIndex] as GalleryFileContainer).isImage) {
+                    return currentDirFiles[nextIndex]
+                }
             }
         }
 
         return null
     }
 
-    private fun findPreviousImage() : GalleryFileContainer? {
+    private fun findPreviousImage() : GalleryBaseContainer? {
         val currentDirFiles = GalleryNavigationData.currentDirectoryFiles
         val currentIndex = currentDirFiles.indexOf(currentGalleryImage)
 
@@ -279,8 +282,10 @@ class ImageViewerActivity : AppCompatActivity() {
         var previousIndex = currentIndex
         while (previousIndex > 0) {
             --previousIndex
-            if(currentDirFiles[previousIndex].isImage) {
-                return currentDirFiles[previousIndex]
+            if (currentDirFiles[previousIndex].isGalleryFile) {
+                if ((currentDirFiles[previousIndex] as GalleryFileContainer).isImage) {
+                    return currentDirFiles[previousIndex]
+                }
             }
         }
 

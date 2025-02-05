@@ -68,7 +68,7 @@ class VideoViewerVlcActivity : VideoViewerBaseActivity() {
 
     private fun setupUI(videoUri: Uri) {
         val currentDirFiles = GalleryNavigationData.currentDirectoryFiles
-        val currentGalleryImage = currentDirFiles.find { file -> file.file.uri == videoUri }
+        val currentGalleryImage = currentDirFiles.find { file -> file.contentFile.uri == videoUri }
         frameRate = VideoFileTools.getVideoFramerate(this, videoUri, frameRate.toInt()).toLong()
 
         supportActionBar?.title = currentGalleryImage?.name

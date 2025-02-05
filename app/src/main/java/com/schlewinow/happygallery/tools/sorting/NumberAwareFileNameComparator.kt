@@ -1,6 +1,6 @@
 package com.schlewinow.happygallery.tools.sorting
 
-import com.schlewinow.happygallery.model.GalleryFileContainer
+import com.schlewinow.happygallery.model.item.GalleryBaseContainer
 import java.math.BigInteger
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -15,9 +15,9 @@ import java.util.regex.Pattern
 class NumberAwareFileNameComparator(ascending: Boolean) :  BaseFileComparator(ascending) {
     private val PATTERN: Pattern = Pattern.compile("(\\D*)(\\d*)")
 
-    override val valueComparator: Comparator<GalleryFileContainer>
-        get() = object : Comparator<GalleryFileContainer> {
-            override fun compare(file1: GalleryFileContainer?, file2: GalleryFileContainer?): Int {
+    override val valueComparator: Comparator<GalleryBaseContainer>
+        get() = object : Comparator<GalleryBaseContainer> {
+            override fun compare(file1: GalleryBaseContainer?, file2: GalleryBaseContainer?): Int {
                 val matcher1: Matcher = PATTERN.matcher(file1?.name?.lowercase()?: "")
                 val matcher2: Matcher = PATTERN.matcher(file2?.name?.lowercase()?: "")
 

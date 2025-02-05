@@ -12,9 +12,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.schlewinow.happygallery.R
-import com.schlewinow.happygallery.model.GalleryFileContainer
+import com.schlewinow.happygallery.model.item.GalleryFileContainer
 import com.schlewinow.happygallery.model.GalleryNavigationData
 import com.schlewinow.happygallery.model.VideoData
+import com.schlewinow.happygallery.model.item.GalleryBaseContainer
+import com.schlewinow.happygallery.model.item.GalleryDirectoryContainer
 import com.schlewinow.happygallery.settings.GallerySettings
 import com.schlewinow.happygallery.tools.folders.DirectoryTools
 import com.schlewinow.happygallery.tools.folders.ImageFileTools
@@ -153,7 +155,7 @@ class GalleryNavigationActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(!GalleryNavigationData.folderNavigationStack.isEmpty())
     }
 
-    private fun navigateUp(target: GalleryFileContainer) {
+    private fun navigateUp(target: GalleryDirectoryContainer) {
         if (!GalleryNavigationData.folderNavigationStack.isEmpty()) {
             GalleryNavigationData.folderNavigationStack.last().galleryRecyclerState = fileRecycler?.layoutManager?.onSaveInstanceState()
         }
@@ -197,9 +199,9 @@ class GalleryNavigationActivity : AppCompatActivity() {
         }
     }
 
-    inner class NavigationRecyclerAdapter(private val files: MutableList<GalleryFileContainer>) : RecyclerView.Adapter<FileEntryHolder>() {
+    inner class NavigationRecyclerAdapter(private val files: MutableList<GalleryBaseContainer>) : RecyclerView.Adapter<FileEntryHolder>() {
         override fun getItemViewType(position: Int): Int {
-            if (files[position].isImage || files[position].isVideo) {
+            if (files[position].isGalleryFile) {
                 return 1
             }
             return 0
@@ -215,8 +217,8 @@ class GalleryNavigationActivity : AppCompatActivity() {
 
         override fun onBindViewHolder(holder: FileEntryHolder, position: Int) {
             when (holder.itemViewType) {
-               0 -> holder.setupDirectory(files[position])
-               1 -> holder.setupImage(files[position])
+               0 -> holder.setupDirectory(files[position] as GalleryDirectoryContainer)
+               1 -> holder.setupImage(files[position] as GalleryFileContainer)
             }
         }
 
@@ -226,18 +228,18 @@ class GalleryNavigationActivity : AppCompatActivity() {
     }
 
     inner class FileEntryHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-        fun setupDirectory(galleryFile: GalleryFileContainer) {
+        fun setupDirectory(galleryDirectory: GalleryDirectoryContainer) {
             val nameText: TextView = view.findViewById(R.id.galleryFolderElementName)
-            nameText.text = galleryFile.name
+            nameText.text = galleryDirectory.name
 
             val childrenCountText: TextView = view.findViewById(R.id.galleryFolderChildrenCount)
-            childrenCountText.text ="${galleryFile.subFolders}-${galleryFile.subFiles}"
+            childrenCountText.text ="${galleryDirectory.getChildDirectories().count()}-${galleryDirectory.getChildFiles().count()}"
 
             val directoryPreviewImage: ImageView = view.findViewById(R.id.galleryFolderPreviewImage)
             // Required in case there is an unfinished preview image loading process.
             Glide.with(this@GalleryNavigationActivity).clear(directoryPreviewImage)
             directoryPreviewImage.setImageDrawable(null)
-            val previewFile = DirectoryTools.getDirectoryPreviewImage(galleryFile)
+            val previewFile = DirectoryTools.getDirectoryPreviewImage(galleryDirectory)
             if (previewFile != null) {
                 if (previewFile.isImage) {
                     ImageFileTools.loadThumbnail(this@GalleryNavigationActivity, previewFile, directoryPreviewImage, isPortraitOrientation)
@@ -246,7 +248,7 @@ class GalleryNavigationActivity : AppCompatActivity() {
                 }
             }
 
-            view.setOnClickListener { navigateUp(galleryFile) }
+            view.setOnClickListener { navigateUp(galleryDirectory) }
         }
 
         fun setupImage(galleryFile: GalleryFileContainer) {
@@ -262,13 +264,13 @@ class GalleryNavigationActivity : AppCompatActivity() {
 
             if (galleryFile.isImage) {
                 ImageFileTools.loadThumbnail(this@GalleryNavigationActivity, galleryFile, previewImage, isPortraitOrientation)
-                view.setOnClickListener { navigateToActivity(ImageViewerActivity::class.java, galleryFile.file.uri) }
+                view.setOnClickListener { navigateToActivity(ImageViewerActivity::class.java, galleryFile.contentFile.uri) }
                 movieBorder.visibility = View.GONE
             } else if (galleryFile.isVideo) {
                 VideoFileTools.loadThumbnail(this@GalleryNavigationActivity, galleryFile, previewImage, isPortraitOrientation)
                 view.setOnClickListener {
                     VideoData.reset()
-                    navigateToActivity(VideoViewerVlcActivity::class.java, galleryFile.file.uri) }
+                    navigateToActivity(VideoViewerVlcActivity::class.java, galleryFile.contentFile.uri) }
                 movieBorder.visibility = View.VISIBLE
             }
         }

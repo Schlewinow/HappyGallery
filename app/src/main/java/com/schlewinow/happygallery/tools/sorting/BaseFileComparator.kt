@@ -1,17 +1,17 @@
 package com.schlewinow.happygallery.tools.sorting
 
-import com.schlewinow.happygallery.model.GalleryFileContainer
+import com.schlewinow.happygallery.model.item.GalleryBaseContainer
 
 /**
  * Base comparable for file sorting actions.
  * Will keep all folders at the start, regardless of sorting.
  */
-abstract class BaseFileComparator(val ascending: Boolean) : Comparator<GalleryFileContainer> {
-    protected abstract val valueComparator: Comparator<GalleryFileContainer>
+abstract class BaseFileComparator(val ascending: Boolean) : Comparator<GalleryBaseContainer> {
+    protected abstract val valueComparator: Comparator<GalleryBaseContainer>
     private val minor = if(ascending) -1 else 1
     private val major = if(ascending) 1 else -1
 
-    override fun compare(file1: GalleryFileContainer?, file2: GalleryFileContainer?): Int {
+    override fun compare(file1: GalleryBaseContainer?, file2: GalleryBaseContainer?): Int {
         when {
             file1 == null && file2 == null -> return 0
             file1 == null -> return minor

@@ -96,7 +96,7 @@ class VideoViewerExoActivity : VideoViewerBaseActivity() {
 
     private fun setup(videoUri: Uri) {
         val currentDirFiles = GalleryNavigationData.currentDirectoryFiles
-        val currentGalleryImage = currentDirFiles.find { file -> file.file.uri == videoUri }
+        val currentGalleryImage = currentDirFiles.find { file -> file.contentFile.uri == videoUri }
         frameRate = VideoFileTools.getVideoFramerate(this, videoUri, frameRate.toInt()).toLong()
 
         supportActionBar?.title = currentGalleryImage?.name

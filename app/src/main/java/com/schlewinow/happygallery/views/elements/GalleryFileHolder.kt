@@ -1,5 +1,6 @@
 package com.schlewinow.happygallery.views.elements
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -8,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.schlewinow.happygallery.R
 import com.schlewinow.happygallery.model.GalleryDirectoryLoadState
 import com.schlewinow.happygallery.model.VideoProgressData
-import com.schlewinow.happygallery.model.item.DirectoryStateListenerInterface
+import com.schlewinow.happygallery.model.DirectoryStateListenerInterface
 import com.schlewinow.happygallery.model.item.GalleryDirectoryContainer
 import com.schlewinow.happygallery.model.item.GalleryFileContainer
 import com.schlewinow.happygallery.tools.folders.DirectoryTools
@@ -22,6 +23,11 @@ class GalleryFileEntryHolder(
     private val view: View,
     private val galleryNavigationActivity: GalleryNavigationActivity
     ) : RecyclerView.ViewHolder(view), DirectoryStateListenerInterface {
+
+    /**
+     * Reference to visualized directory container is kept for some performance optimizing procedures.
+     */
+    private var galleryDirectory: GalleryDirectoryContainer? = null
 
     /**
      * Index inside the recycler view adapter. Used to optimize redraw requests.
@@ -57,12 +63,17 @@ class GalleryFileEntryHolder(
         // Required in case there is an unfinished preview image loading process.
         Glide.with(galleryNavigationActivity).clear(directoryPreviewImage)
         directoryPreviewImage.setImageDrawable(null)
-        val previewFile = DirectoryTools.getDirectoryPreviewImage(galleryDirectory)
-        if (previewFile != null) {
-            if (previewFile.isImage) {
-                ImageFileTools.loadThumbnail(galleryNavigationActivity, previewFile, directoryPreviewImage, galleryNavigationActivity.isPortraitOrientation)
-            } else if (previewFile.isVideo) {
-                VideoFileTools.loadThumbnail(galleryNavigationActivity, previewFile, directoryPreviewImage, galleryNavigationActivity.isPortraitOrientation)
+
+        // Only start loading preview image once files are actually available.
+        if (galleryDirectory.loadingState == GalleryDirectoryLoadState.FINISHED) {
+            val previewFile = DirectoryTools.getDirectoryPreviewImage(galleryDirectory)
+            if (previewFile != null) {
+                if (previewFile.isImage) {
+                    ImageFileTools.loadThumbnail(galleryNavigationActivity, previewFile, directoryPreviewImage, galleryNavigationActivity.isPortraitOrientation)
+                }
+                else if (previewFile.isVideo) {
+                    VideoFileTools.loadThumbnail(galleryNavigationActivity, previewFile, directoryPreviewImage, galleryNavigationActivity.isPortraitOrientation)
+                }
             }
         }
 
@@ -71,6 +82,12 @@ class GalleryFileEntryHolder(
         }
     }
 
+    fun onDirectoryViewDetached() {
+        // To improve performance, remove listener if view is not visible to the user.
+        galleryDirectory?.clearLoadStateListener()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
     override fun onLoadStateChanged(galleryDirectory: GalleryDirectoryContainer) {
         // Make sure to call this on the UI thread,
         // as the state update will most likely be called from a separate thread.

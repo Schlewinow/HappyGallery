@@ -49,6 +49,12 @@ class GalleryNavigationRecyclerAdapter(private val galleryNavigationActivity: Ga
         }
     }
 
+    override fun onViewDetachedFromWindow(holder: GalleryFileEntryHolder) {
+        if (holder.itemViewType == 0) {
+            holder.onDirectoryViewDetached()
+        }
+    }
+
     override fun getItemCount(): Int {
         return currentDirs.size + currentFiles.size
     }

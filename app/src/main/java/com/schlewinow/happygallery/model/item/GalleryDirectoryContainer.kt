@@ -2,6 +2,7 @@ package com.schlewinow.happygallery.model.item
 
 import android.os.Parcelable
 import com.lazygeniouz.filecompat.file.DocumentFileCompat
+import com.schlewinow.happygallery.model.DirectoryStateListenerInterface
 import com.schlewinow.happygallery.model.GalleryDirectoryLoadState
 import com.schlewinow.happygallery.tools.folders.DirectoryTools
 

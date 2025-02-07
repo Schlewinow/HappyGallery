@@ -35,24 +35,22 @@ object DirectoryTools {
      * @return A list of each collected directories and files as a pair.
      */
     fun loadChildren(parentDirectory: GalleryDirectoryContainer) : Pair<MutableList<GalleryDirectoryContainer>, MutableList<GalleryFileContainer>> {
-        synchronized(this) {
-            val childFileContainers: MutableList<GalleryFileContainer> = mutableListOf()
-            val childDirectoryContainers: MutableList<GalleryDirectoryContainer> = mutableListOf()
+        val childFileContainers: MutableList<GalleryFileContainer> = mutableListOf()
+        val childDirectoryContainers: MutableList<GalleryDirectoryContainer> = mutableListOf()
 
-            for (childDocFile in parentDirectory.docFile.listFiles()) {
-                // Only add files supported by the gallery, ignore everything else.
-                if (childDocFile.isFile() &&
-                    (ImageFileTools.checkIfImage(childDocFile) || VideoFileTools.checkIfVideo(childDocFile))) {
-                    childFileContainers.add(GalleryFileContainer(childDocFile))
-                }
-                // Double-check is required, as some files will wrongly show up as directories.
-                else if (childDocFile.isDirectory() && !childDocFile.isFile()) {
-                    childDirectoryContainers.add(GalleryDirectoryContainer(childDocFile, parentDirectory))
-                }
+        for (childDocFile in parentDirectory.docFile.listFiles()) {
+            // Only add files supported by the gallery, ignore everything else.
+            if (childDocFile.isFile() &&
+                (ImageFileTools.checkIfImage(childDocFile) || VideoFileTools.checkIfVideo(childDocFile))) {
+                childFileContainers.add(GalleryFileContainer(childDocFile))
             }
-
-            return Pair(childDirectoryContainers, childFileContainers)
+            // Double-check is required, as some files will wrongly show up as directories.
+            else if (childDocFile.isDirectory() && !childDocFile.isFile()) {
+                childDirectoryContainers.add(GalleryDirectoryContainer(childDocFile, parentDirectory))
+            }
         }
+
+        return Pair(childDirectoryContainers, childFileContainers)
     }
 
     /**
@@ -118,7 +116,12 @@ object DirectoryTools {
         if (topPriorityDirectory.loadingState == GalleryDirectoryLoadState.FINISHED) {
             var allDone = true
             for (childDirectory in topPriorityDirectory.getChildDirectories()) {
-                allDone = allDone && childDirectory.loadingState == GalleryDirectoryLoadState.FINISHED
+                allDone = childDirectory.loadingState == GalleryDirectoryLoadState.FINISHED
+
+                // Cancel early if possible.
+                if(!allDone) {
+                    break;
+                }
             }
 
             if (allDone) {

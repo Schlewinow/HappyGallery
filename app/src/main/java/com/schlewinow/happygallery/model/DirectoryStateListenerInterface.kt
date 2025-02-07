@@ -1,4 +1,6 @@
-package com.schlewinow.happygallery.model.item
+package com.schlewinow.happygallery.model
+
+import com.schlewinow.happygallery.model.item.GalleryDirectoryContainer
 
 /**
  * Simple observer to be used by the UI to properly reflect directory load state changes.

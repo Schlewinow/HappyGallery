@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.schlewinow.happygallery.R
 import com.schlewinow.happygallery.model.item.GalleryDirectoryContainer
 import com.schlewinow.happygallery.model.item.GalleryFileContainer
-import com.schlewinow.happygallery.settings.GallerySettings
 import com.schlewinow.happygallery.tools.GalleryNavigationManager
+import com.schlewinow.happygallery.tools.folders.DirectoryTools.applySortingAndFilters
 import com.schlewinow.happygallery.views.GalleryNavigationActivity
 
 /**
@@ -49,12 +49,6 @@ class GalleryNavigationRecyclerAdapter(private val galleryNavigationActivity: Ga
         }
     }
 
-    override fun onViewDetachedFromWindow(holder: GalleryFileEntryHolder) {
-        if (holder.itemViewType == 0) {
-            holder.onDirectoryViewDetached()
-        }
-    }
-
     override fun getItemCount(): Int {
         return currentDirs.size + currentFiles.size
     }
@@ -66,19 +60,10 @@ class GalleryNavigationRecyclerAdapter(private val galleryNavigationActivity: Ga
      */
     @SuppressLint("NotifyDataSetChanged")
     fun reloadItems() {
-        var dirs = GalleryNavigationManager.currentDirectory.getChildDirectories().sortedWith(
-            GallerySettings.sortingComparator)
-        var files = GalleryNavigationManager.currentDirectory.getChildFiles().sortedWith(
-            GallerySettings.sortingComparator)
-        if (!GallerySettings.showHiddenFiles) {
-            dirs = dirs.filter { file -> !file.name.startsWith(".") }
-            files = files.filter { file -> !file.name.startsWith(".") }
-        }
-
         currentDirs.clear()
-        currentDirs.addAll(dirs)
+        currentDirs.addAll(applySortingAndFilters(GalleryNavigationManager.currentDirectory.getChildDirectories()))
         currentFiles.clear()
-        currentFiles.addAll(files)
+        currentFiles.addAll(applySortingAndFilters(GalleryNavigationManager.currentDirectory.getChildFiles()))
 
         // In fact, the whole item list has changed at this point.
         // Hence, we can suppress the warning.

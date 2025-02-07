@@ -12,7 +12,7 @@ import com.schlewinow.happygallery.model.VideoProgressData
 import com.schlewinow.happygallery.model.DirectoryStateListenerInterface
 import com.schlewinow.happygallery.model.item.GalleryDirectoryContainer
 import com.schlewinow.happygallery.model.item.GalleryFileContainer
-import com.schlewinow.happygallery.tools.folders.DirectoryTools
+import com.schlewinow.happygallery.tools.folders.DirectoryTools.applySortingAndFilters
 import com.schlewinow.happygallery.tools.folders.ImageFileTools
 import com.schlewinow.happygallery.tools.folders.VideoFileTools
 import com.schlewinow.happygallery.views.GalleryNavigationActivity
@@ -23,11 +23,6 @@ class GalleryFileEntryHolder(
     private val view: View,
     private val galleryNavigationActivity: GalleryNavigationActivity
     ) : RecyclerView.ViewHolder(view), DirectoryStateListenerInterface {
-
-    /**
-     * Reference to visualized directory container is kept for some performance optimizing procedures.
-     */
-    private var galleryDirectory: GalleryDirectoryContainer? = null
 
     /**
      * Index inside the recycler view adapter. Used to optimize redraw requests.
@@ -47,12 +42,12 @@ class GalleryFileEntryHolder(
         nameText.text = galleryDirectory.name
 
         val childrenCountText: TextView = view.findViewById(R.id.galleryFolderChildrenCount)
-        val statusText = when (galleryDirectory.loadingState) {
-            GalleryDirectoryLoadState.NOT_LOADED -> ""
-            GalleryDirectoryLoadState.QUEUED -> "loading"
-            GalleryDirectoryLoadState.FINISHED -> "${galleryDirectory.getChildDirectories().count()}-${galleryDirectory.getChildFiles().count()}"
+        if (galleryDirectory.loadingState == GalleryDirectoryLoadState.NOT_LOADED) {
+            childrenCountText.text = ""
         }
-        childrenCountText.text = statusText
+        else if (galleryDirectory.loadingState == GalleryDirectoryLoadState.QUEUED) {
+            childrenCountText.text = "loading"
+        }
 
         // Only add listener if status isn't finished already to save performance.
         if (galleryDirectory.loadingState != GalleryDirectoryLoadState.FINISHED) {
@@ -66,7 +61,14 @@ class GalleryFileEntryHolder(
 
         // Only start loading preview image once files are actually available.
         if (galleryDirectory.loadingState == GalleryDirectoryLoadState.FINISHED) {
-            val previewFile = DirectoryTools.getDirectoryPreviewImage(galleryDirectory)
+            // Find preview image by sorting the files inside the child folder.
+            val filteredAndSortedFiles = applySortingAndFilters(galleryDirectory.getChildFiles())
+            var previewFile: GalleryFileContainer? = null
+            if (filteredAndSortedFiles.isNotEmpty()) {
+                previewFile = filteredAndSortedFiles.first()
+            }
+
+            // Apply selected preview image.
             if (previewFile != null) {
                 if (previewFile.isImage) {
                     ImageFileTools.loadThumbnail(galleryNavigationActivity, previewFile, directoryPreviewImage, galleryNavigationActivity.isPortraitOrientation)
@@ -75,16 +77,16 @@ class GalleryFileEntryHolder(
                     VideoFileTools.loadThumbnail(galleryNavigationActivity, previewFile, directoryPreviewImage, galleryNavigationActivity.isPortraitOrientation)
                 }
             }
+
+            // Since files are already filtered and sorted,
+            // do the same with directories now to get the correct child directory count.
+            val filteredAndSortedDirs = applySortingAndFilters(galleryDirectory.getChildDirectories())
+            childrenCountText.text = "${filteredAndSortedDirs.count()}-${filteredAndSortedFiles.count()}"
         }
 
         view.setOnClickListener {
             galleryNavigationActivity.navigateToDirectory(galleryDirectory)
         }
-    }
-
-    fun onDirectoryViewDetached() {
-        // To improve performance, remove listener if view is not visible to the user.
-        galleryDirectory?.clearLoadStateListener()
     }
 
     @SuppressLint("NotifyDataSetChanged")

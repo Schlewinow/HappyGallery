@@ -3,6 +3,7 @@ package com.schlewinow.happygallery.tools.folders
 import android.os.Handler
 import android.os.HandlerThread
 import com.schlewinow.happygallery.model.GalleryDirectoryLoadState
+import com.schlewinow.happygallery.model.item.GalleryBaseContainer
 import com.schlewinow.happygallery.model.item.GalleryDirectoryContainer
 import com.schlewinow.happygallery.model.item.GalleryFileContainer
 import com.schlewinow.happygallery.settings.GallerySettings
@@ -120,7 +121,7 @@ object DirectoryTools {
 
                 // Cancel early if possible.
                 if(!allDone) {
-                    break;
+                    break
                 }
             }
 
@@ -143,17 +144,21 @@ object DirectoryTools {
     }
 
     /**
-     * Find a file to be used as preview of a folder.
-     * @param directory The directory which is to be scanned for a preview file.
-     * @return The first image or video file inside a folder. Null if nothing was found.
+     * Apply sorting and filters as defined by the current settings to a list of gallery items.
+     * @param galleryItems The directories and/or files to filter and sort.
+     * @return The filtered and sorted list of items. Output type will be same as input type.
      */
-    fun getDirectoryPreviewImage(directory: GalleryDirectoryContainer): GalleryFileContainer? {
-        val childImages = directory.getChildFiles()
-        if (childImages.isNotEmpty()) {
-            val sortedImages = childImages.sortedWith(GallerySettings.sortingComparator)
-            return sortedImages.first()
+    fun <T: GalleryBaseContainer>applySortingAndFilters(galleryItems: List<T>) : List<T> {
+        // No need to filter or sort empty lists.
+        if (galleryItems.isEmpty()) {
+            return galleryItems
         }
-        return null
+
+        var filteredItems = galleryItems
+        if (!GallerySettings.showHiddenFiles) {
+            filteredItems = filteredItems.filter { file -> !file.name.startsWith(".") }
+        }
+        return filteredItems.sortedWith(GallerySettings.sortingComparator)
     }
 
     /**

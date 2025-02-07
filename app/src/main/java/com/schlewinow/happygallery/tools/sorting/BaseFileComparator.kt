@@ -22,14 +22,14 @@ abstract class BaseFileComparator(val ascending: Boolean) : Comparator<GalleryBa
         val file2Directory = file2!!.isDirectory
 
         // Check if both files are folders or both files are non-folders.
-        if((file1Directory && file2Directory) || (!file1Directory && !file2Directory)) {
+        if ((file1Directory && file2Directory) || (!file1Directory && !file2Directory)) {
             // Inheriting classes will use a certain property at this point, like file name or size.
             return valueComparator.compare(file1, file2)
         }
 
         // If one is a folder and the other is not, folder comes first.
         // This is independent of ascending or descending order.
-        if(file1Directory) {
+        if (file1Directory) {
             return -1
         } else {
             return 1

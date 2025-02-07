@@ -8,8 +8,8 @@ import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import com.schlewinow.happygallery.R
-import com.schlewinow.happygallery.model.GalleryNavigationData
-import com.schlewinow.happygallery.model.VideoData
+import com.schlewinow.happygallery.tools.GalleryNavigationManager
+import com.schlewinow.happygallery.model.VideoProgressData
 import com.schlewinow.happygallery.tools.folders.VideoFileTools
 import org.videolan.libvlc.LibVLC
 import org.videolan.libvlc.Media
@@ -67,8 +67,8 @@ class VideoViewerVlcActivity : VideoViewerBaseActivity() {
     }
 
     private fun setupUI(videoUri: Uri) {
-        val currentDirFiles = GalleryNavigationData.currentDirectoryFiles
-        val currentGalleryImage = currentDirFiles.find { file -> file.contentFile.uri == videoUri }
+        val currentDirFiles = GalleryNavigationManager.currentDirectory.getChildFiles()
+        val currentGalleryImage = currentDirFiles.find { file -> file.uri == videoUri }
         frameRate = VideoFileTools.getVideoFramerate(this, videoUri, frameRate.toInt()).toLong()
 
         supportActionBar?.title = currentGalleryImage?.name
@@ -135,7 +135,7 @@ class VideoViewerVlcActivity : VideoViewerBaseActivity() {
             }
         })
 
-        setupGuidelines(GalleryNavigationData.statusBarHeight, GalleryNavigationData.navigationBarHeight)
+        setupGuidelines(GalleryNavigationManager.statusBarHeight, GalleryNavigationManager.navigationBarHeight)
     }
 
     private fun resetVideoUI() {
@@ -242,7 +242,7 @@ class VideoViewerVlcActivity : VideoViewerBaseActivity() {
      * Notice that the progress returned by VLC is inaccurate.
      */
     private fun storeVideoProgress() {
-        VideoData.currentVideoPercent = videoPlayer?.position?: 0f
+        VideoProgressData.currentVideoPercent = videoPlayer?.position?: 0f
     }
 
     /**
@@ -250,7 +250,7 @@ class VideoViewerVlcActivity : VideoViewerBaseActivity() {
      * Notice that the progress returned by VLC is inaccurate and slight frame jumps are possible.
      */
     private fun restoreVideoProgress(): Float {
-        return VideoData.currentVideoPercent
+        return VideoProgressData.currentVideoPercent
     }
 
     private fun rewindVideo(milliseconds: Long) {

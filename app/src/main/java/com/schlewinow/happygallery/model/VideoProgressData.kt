@@ -1,6 +1,6 @@
 package com.schlewinow.happygallery.model;
 
-object VideoData {
+object VideoProgressData {
     var currentVideoMillis: Long = 0
 
     var currentVideoPercent: Float = 0f

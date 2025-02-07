@@ -3,7 +3,7 @@ package com.schlewinow.happygallery.settings
 import android.content.Context
 import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
-import com.schlewinow.happygallery.model.GalleryNavigationData
+import com.schlewinow.happygallery.tools.GalleryNavigationManager
 
 
 object RootDirectorySettings {
@@ -13,7 +13,7 @@ object RootDirectorySettings {
 
     fun addRootDirectory(newDir: DocumentFile, context: Context) {
         rootDirectories.add(newDir)
-        GalleryNavigationData.loadRootDirectoryGalleryContainers(newDir, context)
+        GalleryNavigationManager.loadRootDirectoryGalleryContainers(newDir, context)
     }
 
     fun removeRootDirectory(removeDir: DocumentFile) {

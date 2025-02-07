@@ -13,13 +13,15 @@ import java.util.regex.Pattern
  * Original code found here: https://codereview.stackexchange.com/questions/37192/number-aware-string-sorting-with-comparator
  */
 class NumberAwareFileNameComparator(ascending: Boolean) :  BaseFileComparator(ascending) {
-    private val PATTERN: Pattern = Pattern.compile("(\\D*)(\\d*)")
+    private val pattern: Pattern = Pattern.compile("(\\D*)(\\d*)")
 
     override val valueComparator: Comparator<GalleryBaseContainer>
         get() = object : Comparator<GalleryBaseContainer> {
             override fun compare(file1: GalleryBaseContainer?, file2: GalleryBaseContainer?): Int {
-                val matcher1: Matcher = PATTERN.matcher(file1?.name?.lowercase()?: "")
-                val matcher2: Matcher = PATTERN.matcher(file2?.name?.lowercase()?: "")
+                val nameFile1 = file1?.name?.lowercase()?: ""
+                val nameFile2 = file2?.name?.lowercase()?: ""
+                val matcher1: Matcher = pattern.matcher(if (ascending) { nameFile1 } else { nameFile2 })
+                val matcher2: Matcher = pattern.matcher(if (ascending) { nameFile2 } else { nameFile1 })
 
                 // The only way find() could fail is at the end of a string
                 while (matcher1.find() && matcher2.find()) {

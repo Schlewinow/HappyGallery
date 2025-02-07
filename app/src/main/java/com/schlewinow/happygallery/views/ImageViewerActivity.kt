@@ -18,9 +18,8 @@ import com.bumptech.glide.Glide
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.schlewinow.happygallery.R
-import com.schlewinow.happygallery.model.GalleryNavigationData
+import com.schlewinow.happygallery.tools.GalleryNavigationManager
 import com.schlewinow.happygallery.model.item.GalleryBaseContainer
-import com.schlewinow.happygallery.model.item.GalleryFileContainer
 import kotlin.math.absoluteValue
 import kotlin.math.sign
 
@@ -91,8 +90,8 @@ class ImageViewerActivity : AppCompatActivity() {
     }
 
     private fun setup(imageUri: Uri) {
-        val currentDirFiles = GalleryNavigationData.currentDirectoryFiles
-        currentGalleryImage = currentDirFiles.find { file -> file.contentFile.uri == imageUri }
+        val currentDirFiles = GalleryNavigationManager.currentDirectory.getChildFiles()
+        currentGalleryImage = currentDirFiles.find { file -> file.uri == imageUri }
 
         supportActionBar?.title = currentGalleryImage?.name
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -128,7 +127,7 @@ class ImageViewerActivity : AppCompatActivity() {
             nextButton.visibility = View.INVISIBLE
         }
 
-        setupGuidelines(GalleryNavigationData.statusBarHeight, GalleryNavigationData.navigationBarHeight)
+        setupGuidelines(GalleryNavigationManager.statusBarHeight, GalleryNavigationManager.navigationBarHeight)
     }
 
     private fun setupScaleImageMode(imageUri: Uri) {
@@ -257,17 +256,15 @@ class ImageViewerActivity : AppCompatActivity() {
     }
 
     private fun findNextImage() : GalleryBaseContainer? {
-        val currentDirFiles = GalleryNavigationData.currentDirectoryFiles
+        val currentDirFiles = GalleryNavigationManager.currentDirectory.getChildFiles()
         val currentIndex = currentDirFiles.indexOf(currentGalleryImage)
 
         // Find the next image in the current folder.
         var nextIndex = currentIndex
         while (nextIndex < currentDirFiles.size - 1) {
             ++nextIndex
-            if (currentDirFiles[nextIndex].isGalleryFile) {
-                if ((currentDirFiles[nextIndex] as GalleryFileContainer).isImage) {
-                    return currentDirFiles[nextIndex]
-                }
+            if ((currentDirFiles[nextIndex]).isImage) {
+                return currentDirFiles[nextIndex]
             }
         }
 
@@ -275,17 +272,15 @@ class ImageViewerActivity : AppCompatActivity() {
     }
 
     private fun findPreviousImage() : GalleryBaseContainer? {
-        val currentDirFiles = GalleryNavigationData.currentDirectoryFiles
+        val currentDirFiles = GalleryNavigationManager.currentDirectory.getChildFiles()
         val currentIndex = currentDirFiles.indexOf(currentGalleryImage)
 
         // Find the previous image in the current folder.
         var previousIndex = currentIndex
         while (previousIndex > 0) {
             --previousIndex
-            if (currentDirFiles[previousIndex].isGalleryFile) {
-                if ((currentDirFiles[previousIndex] as GalleryFileContainer).isImage) {
-                    return currentDirFiles[previousIndex]
-                }
+            if ((currentDirFiles[previousIndex]).isImage) {
+                return currentDirFiles[previousIndex]
             }
         }
 

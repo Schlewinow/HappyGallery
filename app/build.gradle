@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.schlewinow.happygallery"
         minSdk 24
-        targetSdk 34
+        targetSdk 35
         versionCode 1
         versionName "0.1"
 
@@ -33,18 +33,18 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'androidx.core:core-ktx:1.15.0'
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
     // Improved version over default MediaPlayer.
     implementation 'com.google.android.exoplayer:exoplayer:2.19.1'
     // Allows to play a lot more file formats compared to MediaPlayer.
-    implementation 'org.videolan.android:libvlc-all:3.3.5'
+    implementation 'org.videolan.android:libvlc-all:3.6.1'
     // Provides quicker file access compared to DocumentFile.
     implementation "com.lazygeniouz:documentfile_compat:0.8"
     // Advanced image loading routines.
-    implementation 'com.github.bumptech.glide:glide:4.13.0'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
     // Image viewer with gesture controls, allows to load huge images as well.
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0'
 }

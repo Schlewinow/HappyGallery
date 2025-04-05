@@ -1,4 +1,4 @@
-package com.schlewinow.happygallery.views;
+package com.schlewinow.happygallery.views
 
 import android.os.Build
 import android.os.Bundle
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.WindowInsets
 import androidx.appcompat.app.AppCompatActivity
 import com.schlewinow.happygallery.R
-import com.schlewinow.happygallery.model.GalleryNavigationData
+import com.schlewinow.happygallery.tools.GalleryNavigationManager
 
 /**
  * Base activity for any entry point to the app.
@@ -34,34 +34,36 @@ abstract class StartBaseActivity : AppCompatActivity() {
         rootLayout.rootView.setOnApplyWindowInsetsListener { view, windowInsets ->
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 val deviceRotation: Int = display?.rotation ?: Surface.ROTATION_0
-                if (deviceRotation == Surface.ROTATION_0) {
-                    GalleryNavigationData.statusBarHeight = windowInsets.getInsetsIgnoringVisibility(
-                        WindowInsets.Type.systemBars()).top
-                    GalleryNavigationData.navigationBarHeight = windowInsets.getInsetsIgnoringVisibility(
-                        WindowInsets.Type.systemBars()).bottom
-                }
-                else if (deviceRotation == Surface.ROTATION_180) {
-                    GalleryNavigationData.statusBarHeight = windowInsets.getInsetsIgnoringVisibility(
-                        WindowInsets.Type.systemBars()).bottom
-                    GalleryNavigationData.navigationBarHeight = windowInsets.getInsetsIgnoringVisibility(
-                        WindowInsets.Type.systemBars()).top
-                }
-                else if (deviceRotation == Surface.ROTATION_90) {
-                    GalleryNavigationData.statusBarHeight = windowInsets.getInsetsIgnoringVisibility(
-                        WindowInsets.Type.systemBars()).left
-                    GalleryNavigationData.navigationBarHeight = windowInsets.getInsetsIgnoringVisibility(
-                        WindowInsets.Type.systemBars()).right
-                }
-                else if (deviceRotation == Surface.ROTATION_270) {
-                    GalleryNavigationData.statusBarHeight = windowInsets.getInsetsIgnoringVisibility(
-                        WindowInsets.Type.systemBars()).right
-                    GalleryNavigationData.navigationBarHeight = windowInsets.getInsetsIgnoringVisibility(
-                        WindowInsets.Type.systemBars()).left
+                val barSizeTop = windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.systemBars()).top
+                val barSizeBottom = windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.systemBars()).bottom
+                val barSizeLeft = windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.systemBars()).left
+                val barSizeRight = windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.systemBars()).right
+
+                when (deviceRotation) {
+                    Surface.ROTATION_0 -> {
+                        GalleryNavigationManager.statusBarHeight = barSizeTop
+                        GalleryNavigationManager.navigationBarHeight = barSizeBottom
+                    }
+                    Surface.ROTATION_180 -> {
+                        GalleryNavigationManager.statusBarHeight = barSizeBottom
+                        GalleryNavigationManager.navigationBarHeight = barSizeTop
+                    }
+                    Surface.ROTATION_90 -> {
+                        GalleryNavigationManager.statusBarHeight = barSizeLeft
+                        GalleryNavigationManager.navigationBarHeight = barSizeRight
+                    }
+                    Surface.ROTATION_270 -> {
+                        GalleryNavigationManager.statusBarHeight = barSizeRight
+                        GalleryNavigationManager.navigationBarHeight = barSizeLeft
+                    }
                 }
             }
             else {
-                GalleryNavigationData.statusBarHeight = windowInsets.systemWindowInsetTop
-                GalleryNavigationData.navigationBarHeight = windowInsets.systemWindowInsetBottom
+                // Newer Android versions will use the code above.
+                @Suppress("DEPRECATION")
+                GalleryNavigationManager.statusBarHeight = windowInsets.systemWindowInsetTop
+                @Suppress("DEPRECATION")
+                GalleryNavigationManager.navigationBarHeight = windowInsets.systemWindowInsetBottom
             }
 
             // It seems this callback is called twice, so avoid navigation from here multiple times.

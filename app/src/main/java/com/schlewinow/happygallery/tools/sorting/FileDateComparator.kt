@@ -1,11 +1,11 @@
 package com.schlewinow.happygallery.tools.sorting
 
-import com.schlewinow.happygallery.model.GalleryFileContainer
+import com.schlewinow.happygallery.model.item.GalleryBaseContainer
 
 class FileDateComparator(ascending: Boolean) : BaseFileComparator(ascending) {
-    override val valueComparator: Comparator<GalleryFileContainer>
-        get() = object : Comparator<GalleryFileContainer> {
-            override fun compare(file1: GalleryFileContainer?, file2: GalleryFileContainer?): Int {
+    override val valueComparator: Comparator<GalleryBaseContainer>
+        get() = object : Comparator<GalleryBaseContainer> {
+            override fun compare(file1: GalleryBaseContainer?, file2: GalleryBaseContainer?): Int {
                 if (ascending) {
                     return (file1!!.lastModified).compareTo(file2!!.lastModified)
                 } else {

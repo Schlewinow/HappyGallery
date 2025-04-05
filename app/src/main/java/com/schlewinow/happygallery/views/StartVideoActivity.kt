@@ -1,7 +1,7 @@
 package com.schlewinow.happygallery.views
 
 import android.content.Intent
-import com.schlewinow.happygallery.model.VideoData
+import com.schlewinow.happygallery.model.VideoProgressData
 
 /**
  * Entry point activity when opening a video file.
@@ -9,7 +9,7 @@ import com.schlewinow.happygallery.model.VideoData
  */
 class StartVideoActivity : StartBaseActivity() {
     override fun onNavigateFromStart() {
-        VideoData.reset()
+        VideoProgressData.reset()
 
         val navigationIntent = Intent(intent)
         navigationIntent.setClass(this, VideoViewerVlcActivity::class.java)

@@ -8,24 +8,22 @@ import android.net.Uri
 import android.util.Size
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.schlewinow.happygallery.model.GalleryFileContainer
+import com.lazygeniouz.filecompat.file.DocumentFileCompat
+import com.schlewinow.happygallery.model.item.GalleryFileContainer
 import com.schlewinow.happygallery.settings.GallerySettings
 import java.io.IOException
 
 object VideoFileTools {
     /**
-     * Check if a file is an image file.
-     * (Or rather, a currently supported image file)
+     * Check if a file is a video file.
+     * (Or rather, a currently supported video file)
      */
-    fun checkIfVideo(galleryFile: GalleryFileContainer): Boolean {
-        val stringFileType = galleryFile.type.lowercase()
-        if (stringFileType == "mp4"
-            || stringFileType == "mov"
-            || stringFileType == "m4v"
-            || stringFileType == "wmv") {
-            return true
-        }
-        return false
+    fun checkIfVideo(file: DocumentFileCompat): Boolean {
+        val stringFileType = file.extension.lowercase()
+        return (stringFileType == "mp4"
+                || stringFileType == "mov"
+                || stringFileType == "m4v"
+                || stringFileType == "wmv")
     }
 
     /**

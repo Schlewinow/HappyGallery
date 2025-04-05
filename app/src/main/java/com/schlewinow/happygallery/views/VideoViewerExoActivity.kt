@@ -13,8 +13,8 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.schlewinow.happygallery.R
-import com.schlewinow.happygallery.model.GalleryNavigationData
-import com.schlewinow.happygallery.model.VideoData
+import com.schlewinow.happygallery.tools.GalleryNavigationManager
+import com.schlewinow.happygallery.model.VideoProgressData
 import com.schlewinow.happygallery.tools.folders.VideoFileTools
 import java.lang.Thread.sleep
 
@@ -46,7 +46,7 @@ class VideoViewerExoActivity : VideoViewerBaseActivity() {
 
         // Restore UI.
         resetVideoUI()
-        val progressToRestore = VideoData.currentVideoMillis
+        val progressToRestore = VideoProgressData.currentVideoMillis
         val restoreProgressHandler = Handler(mainLooper)
         restoreProgressHandler.postDelayed( {
             videoPlayer?.seekTo(progressToRestore)
@@ -63,7 +63,7 @@ class VideoViewerExoActivity : VideoViewerBaseActivity() {
                 mainHandler?.post {
                     videoProgressBar?.progress = videoPlayer?.currentPosition?.toInt() ?: 0
                     videoProgressTimeText?.text = makeTimeString(videoPlayer?.currentPosition ?: 0)
-                    VideoData.currentVideoMillis = videoPlayer?.currentPosition ?: 0
+                    VideoProgressData.currentVideoMillis = videoPlayer?.currentPosition ?: 0
                 }
                 sleep(100)
             }
@@ -95,8 +95,8 @@ class VideoViewerExoActivity : VideoViewerBaseActivity() {
     }
 
     private fun setup(videoUri: Uri) {
-        val currentDirFiles = GalleryNavigationData.currentDirectoryFiles
-        val currentGalleryImage = currentDirFiles.find { file -> file.file.uri == videoUri }
+        val currentDirFiles = GalleryNavigationManager.currentDirectory.getChildFiles()
+        val currentGalleryImage = currentDirFiles.find { file -> file.uri == videoUri }
         frameRate = VideoFileTools.getVideoFramerate(this, videoUri, frameRate.toInt()).toLong()
 
         supportActionBar?.title = currentGalleryImage?.name
@@ -205,7 +205,7 @@ class VideoViewerExoActivity : VideoViewerBaseActivity() {
             }
         })
 
-        setupGuidelines(GalleryNavigationData.statusBarHeight, GalleryNavigationData.navigationBarHeight)
+        setupGuidelines(GalleryNavigationManager.statusBarHeight, GalleryNavigationManager.navigationBarHeight)
     }
 
     private fun rewindVideo(milliseconds: Long) {

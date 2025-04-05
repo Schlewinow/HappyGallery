@@ -7,7 +7,8 @@ import android.net.Uri
 import android.util.Size
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.schlewinow.happygallery.model.GalleryFileContainer
+import com.lazygeniouz.filecompat.file.DocumentFileCompat
+import com.schlewinow.happygallery.model.item.GalleryFileContainer
 import com.schlewinow.happygallery.settings.GallerySettings
 
 /**
@@ -18,15 +19,12 @@ object ImageFileTools {
      * Check if a file is an image file.
      * (Or rather, a currently supported image file)
      */
-    fun checkIfImage(galleryFile: GalleryFileContainer): Boolean {
-        val stringFileType = galleryFile.type.lowercase()
-        if (stringFileType == "jpg" || stringFileType == "jpeg"
-            || stringFileType == "png"
-            || stringFileType == "webp"
-            || stringFileType == "gif") {
-            return true
-        }
-        return false
+    fun checkIfImage(file: DocumentFileCompat): Boolean {
+        val stringFileType = file.extension.lowercase()
+        return (stringFileType == "jpg" || stringFileType == "jpeg"
+                || stringFileType == "png"
+                || stringFileType == "webp"
+                || stringFileType == "gif")
     }
 
     /**

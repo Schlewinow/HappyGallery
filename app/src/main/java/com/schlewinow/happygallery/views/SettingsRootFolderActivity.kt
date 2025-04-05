@@ -15,7 +15,7 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.schlewinow.happygallery.R
-import com.schlewinow.happygallery.model.GalleryNavigationData
+import com.schlewinow.happygallery.tools.GalleryNavigationManager
 import com.schlewinow.happygallery.settings.RootDirectorySettings
 
 class SettingsRootFolderActivity : AppCompatActivity() {
@@ -107,7 +107,7 @@ class SettingsRootFolderActivity : AppCompatActivity() {
                 setupRootFolders()
 
                 // Update runtime directory hierarchy.
-                GalleryNavigationData.removeRootDirectoryGalleryContainers(file.uri)
+                GalleryNavigationManager.removeRootDirectoryGalleryContainers(file.uri)
             }
         }
     }

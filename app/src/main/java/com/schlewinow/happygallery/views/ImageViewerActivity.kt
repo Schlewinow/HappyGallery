@@ -20,6 +20,7 @@ import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.schlewinow.happygallery.R
 import com.schlewinow.happygallery.tools.GalleryNavigationManager
 import com.schlewinow.happygallery.model.item.GalleryBaseContainer
+import com.schlewinow.happygallery.model.item.GalleryFileContainer
 import kotlin.math.absoluteValue
 import kotlin.math.sign
 
@@ -69,6 +70,10 @@ class ImageViewerActivity : AppCompatActivity() {
                 finish()
                 return true
             }
+            R.id.menu_image_share -> {
+                shareImageViaIntent()
+                return true
+            }
             R.id.menu_image_wallpaper -> {
                 setImageAsWallpaper()
                 return true
@@ -76,6 +81,21 @@ class ImageViewerActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    /**
+     * Open an intent to share the image e.g. in social media or other apps.
+     */
+    private fun shareImageViaIntent() {
+        if (currentGalleryImage == null || currentGalleryImage !is GalleryFileContainer) {
+            return
+        }
+
+        val currentImageFile = currentGalleryImage as GalleryFileContainer
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.setType("image/" + currentImageFile.type.lowercase())
+        shareIntent.putExtra(Intent.EXTRA_STREAM, currentGalleryImage?.uri)
+        startActivity(Intent.createChooser(shareIntent, resources.getString(R.string.menu_image_share)))
     }
 
     /**

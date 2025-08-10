@@ -21,6 +21,7 @@ import com.schlewinow.happygallery.R
 import com.schlewinow.happygallery.tools.GalleryNavigationManager
 import com.schlewinow.happygallery.model.item.GalleryBaseContainer
 import com.schlewinow.happygallery.model.item.GalleryFileContainer
+import com.schlewinow.happygallery.tools.folders.DirectoryTools
 import kotlin.math.absoluteValue
 import kotlin.math.sign
 
@@ -276,7 +277,7 @@ class ImageViewerActivity : AppCompatActivity() {
     }
 
     private fun findNextImage() : GalleryBaseContainer? {
-        val currentDirFiles = GalleryNavigationManager.currentDirectory.getChildFiles()
+        val currentDirFiles = DirectoryTools.applySortingAndFilters(GalleryNavigationManager.currentDirectory.getChildFiles())
         val currentIndex = currentDirFiles.indexOf(currentGalleryImage)
 
         // Find the next image in the current folder.
@@ -292,7 +293,7 @@ class ImageViewerActivity : AppCompatActivity() {
     }
 
     private fun findPreviousImage() : GalleryBaseContainer? {
-        val currentDirFiles = GalleryNavigationManager.currentDirectory.getChildFiles()
+        val currentDirFiles = DirectoryTools.applySortingAndFilters(GalleryNavigationManager.currentDirectory.getChildFiles())
         val currentIndex = currentDirFiles.indexOf(currentGalleryImage)
 
         // Find the previous image in the current folder.

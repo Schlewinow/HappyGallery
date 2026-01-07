@@ -1,0 +1,1 @@
+# Top-level file: apply to all files in the projectroot = true[*]end_of_line = crlf  # Use Windows-style line endings (Git-friendly; avoids Windows/macOS conflicts)

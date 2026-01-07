@@ -23,7 +23,8 @@ object VideoFileTools {
         return (stringFileType == "mp4"
                 || stringFileType == "mov"
                 || stringFileType == "m4v"
-                || stringFileType == "wmv")
+                || stringFileType == "wmv"
+                || stringFileType == "mkv")
     }
 
     /**

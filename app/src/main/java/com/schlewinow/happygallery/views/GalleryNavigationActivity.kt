@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import android.view.*
+import androidx.activity.addCallback
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.schlewinow.happygallery.R
@@ -34,8 +35,18 @@ class GalleryNavigationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_gallery_navigation)
         setSupportActionBar(findViewById(R.id.navigationToolbar))
 
+        onBackPressedDispatcher.addCallback() {
+            onNavigationBack()
+        }
+
         fileRecycler = findViewById(R.id.navigationFileRecycler)
         isPortraitOrientation = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+    }
+
+    private fun onNavigationBack() {
+        if (!navigateBack()) {
+            finish()
+        }
     }
 
     override fun onResume() {
@@ -62,7 +73,7 @@ class GalleryNavigationActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                onBackPressed()
+                onNavigationBack()
                 return true
             }
             R.id.menu_item_sorting -> {
@@ -112,12 +123,6 @@ class GalleryNavigationActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onBackPressed() {
-        if (!navigateBack()) {
-            super.onBackPressed()
-        }
     }
 
     private fun setupGallery() {
